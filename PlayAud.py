@@ -19,15 +19,17 @@ Compile in environment (in Arch): Environment/piplibs/bin/python
 
 import simpleaudio as sa #Module to control Wavfiles
 import pygame as pg
-import time
+from time import sleep
 
 def playwav(file): #Function play for wav files
+
+    global wave_obj, play_current
 
     try: #Init try
 
         wave_obj = sa.WaveObject.from_wave_file(file) #Create a wave object from a wave file
-        play = wave_obj.play() #Play the wave object
-        return play, wave_obj, #print("Im playwav fun!") #Line for work chek #Returns play and wave object
+        play_current = wave_obj.play() #Play the wave object
+        return play_current, wave_obj, print("Im playwav fun!") #Line for work chek #Returns play and wave object
     #Finish Try
     
     except FileNotFoundError: #Init except
@@ -36,6 +38,32 @@ def playwav(file): #Function play for wav files
         return None, NoneActive #Return none
     #Finish Except
 
+def pausewav():
+    
+    global play_current
+
+    if play_current:
+    
+        play_current.stop()  # Detener la reproducción
+        print("Reproducción pausada.")
+    
+    else:
+    
+        print("No hay audio en reproducción.")
+
+def resumewav():
+    
+    global current_play, wave_obj
+    
+    if play_current is None and wave_obj:  # Si no hay reproducción en curso pero tenemos el archivo cargado
+        
+        play_current = wave_obj.play()  # Reanudar la reproducción
+        print("Reproducción reanudada.")
+    
+    else:
+    
+        print("No hay audio para reanudar o ya está en reproducción.")
+
 def playmp3(file): #Function play for mp3 files
 
     try: #Init try
@@ -43,7 +71,7 @@ def playmp3(file): #Function play for mp3 files
         pg.mixer.init() #Start module mixer from pygame
         pg.mixer.music.load(file) #Load MP3
         pg.mixer.music.play() #Start play
-        return pg.mixer.music, True, #print("Im playmp3 fun!") #Line for work check #Return pygame mixer
+        return pg.mixer.music, True, print("Im playmp3 fun!") #Line for work check #Return pygame mixer
     #Finish Try
     
     except pygame.error as e: #Init except
@@ -60,4 +88,9 @@ def playmp3(file): #Function play for mp3 files
     #Finish Except
 
 file = '/home/elcalak/Downloads/Angustia.wav'
+
 playwav(file)
+sleep(3)
+pausewav()
+sleep(3)
+resumewav()
