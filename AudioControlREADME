@@ -1,2 +1,0 @@
-This version from the branch was obsolet beacuse PlayAud.py use simpleaudio lib for wav controls
-and recently we discovered pygame have a more controls for this format for this we will make a change to pygame
