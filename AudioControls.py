@@ -23,7 +23,7 @@ from time import sleep #From module time import sleep function
 
 def load(file): #Function load files
     
-    global sound #Global variable sound to save the current audio
+    global sound, file_type #Global variable sound to save the current audio
     print("Im load fun!") #Line for work check
 
     try: #Init try
@@ -37,13 +37,15 @@ def load(file): #Function load files
             
             pg.mixer.music.load(file) #Load MP3
             print("Im loadmp3 fun!") #Line for work check
-            return sound, True #Return pygame mixer
+            file_type = "mp3"
+            return pg.mixer.music, True #Return pygame mixer
         #Finish condicional for compress formats
 
         elif file.endswith(".wav"): #Start condicional for wav format
             
             sound = pg.mixer.Sound(file) #Load WAV
             print("Im loadwav fun!") #Line for work check
+            file_type = "wav"
             return sound, True #Return pygame mixer
         #Finish condicional for wav format
 
@@ -54,7 +56,7 @@ def load(file): #Function load files
        
     #Finish Try 
     
-    except pygame.error as e: #Init except
+    except pg.error as e: #Init except
     
         print(f"Error to load or play the file: {file}") #Print error message
         print(f"Pygame error: {e}") #Print error message
@@ -72,16 +74,18 @@ def load(file): #Function load files
 def play(): #Function play
 
     print("Im play fun!") #Line for work check
+    global song_status
 
     try: #Init try
         
         print("Hi im play try!") #Line for work check
 
-        if sound == None: #Start condicional for compress format
+        if file_type == "mp3": #Start condicional for compress format
             
             pg.mixer.music.play() #Start play
             print("Im playmp3 fun!") #Line for work check
-            return sound, True #Return pygame mixer
+            song_status = True
+            return pg.mixer.music, True #Return pygame mixer
         #Finish condicional for compress formats
 
         else: #Start condicional for wav format
@@ -89,14 +93,14 @@ def play(): #Function play
             global status_sound #Global variable playsound to save the current status of sound
             status_sound = sound.play() #Start play
             print("Im playwav fun!") #Line for work check
+            song_status = False
             return sound, True #Return pygame mixer
         #Finish condicional for wav format
        
     #Finish Try 
     
-    except pygame.error as e: #Init except
+    except pg.error as e: #Init except
     
-        print(f"Error to load or play the file: {file}") #Print error message
         print(f"Pygame error: {e}") #Print error message
         return None, False #Return none and false
     #Finish Except
@@ -111,19 +115,19 @@ def pause(): #Function pause
         
         print("Hi im pause try!") #Line for work check
 
-        if pg.mixer.music.get_busy() == True or status_sound.get_busy() == True: #Start condicional know if music is played
+        if song_status == True or status_sound.get_busy() == True: #Start condicional know if music is played
         
-            if sound == None: #Start condicional for compress format
+            if file_type == "mp3": #Start condicional for compress format
             
                 pg.mixer.music.pause() #Start pause
-                print("Im playmp3 fun!") #Line for work check
-                return sound, True #Return pygame mixer
+                print("Im pausemp3 fun!") #Line for work check
+                return pg.mixer.music, True #Return pygame mixer
             #Finish condicional for compress formats
 
             else: #Start condicional for wav format
             
                 status_sound.pause() #Start pause
-                print("Im playwav fun!") #Line for work check
+                print("Im pausewav fun!") #Line for work check
                 return sound, True #Return pygame mixer
             #Finish condicional for wav format
        
@@ -134,9 +138,8 @@ def pause(): #Function pause
     
     #Finish Try 
     
-    except pygame.error as e: #Init except
+    except pg.error as e: #Init except
     
-        print(f"Error to load or play the file: {file}") #Print error message
         print(f"Pygame error: {e}") #Print error message
         return None, False #Return none and false
     #Finish Except
@@ -145,25 +148,25 @@ def pause(): #Function pause
 
 def resume(): #Function resume
 
-    print("Im pause fun!") #Line for work check
+    print("Im resume fun!") #Line for work check
 
     try: #Init try
         
-        print("Hi im pause try!") #Line for work check
+        print("Hi im resume try!") #Line for work check
 
-        if pg.mixer.music.get_busy() == True or status_sound.get_busy() == True: #Start condicional know if music is played
+        if song_status == True or status_sound.get_busy() == True: #Start condicional know if music is played
         
-            if sound == None: #Start condicional for compress format
+            if file_type == "mp3": #Start condicional for compress format
             
                 pg.mixer.music.unpause() #Start resume
-                print("Im playmp3 fun!") #Line for work check
-                return sound, True #Return pygame mixer
+                print("Im resumemp3 fun!") #Line for work check
+                return pg.mixer.music, True #Return pygame mixer
             #Finish condicional for compress formats
 
             else: #Start condicional for wav format
             
                 status_sound.unpause() #Start resume
-                print("Im playwav fun!") #Line for work check
+                print("Im resumewav fun!") #Line for work check
                 return sound, True #Return pygame mixer
             #Finish condicional for wav format
        
@@ -175,8 +178,7 @@ def resume(): #Function resume
     #Finish Try 
     
     except pygame.error as e: #Init except
-    
-        print(f"Error to load or play the file: {file}") #Print error message
+
         print(f"Pygame error: {e}") #Print error message
         return None, False #Return none and false
     #Finish Except
@@ -189,13 +191,13 @@ def stop(): #Function stop
 
     try: #Init try
         
-        print("Hi im a try!") #Line for work check
+        print("Hi im a stop try!") #Line for work check
 
-        if sound == None: #Start condicional for compress format
+        if file_type == "mp3": #Start condicional for compress format
             
             pg.mixer.music.stop() #Stop play
             print("Im stopmp3 fun!") #Line for work check
-            return sound, True #Return pygame mixer
+            return pg.mixer.music, True #Return pygame mixer
         #Finish condicional for compress formats
 
         else: #Start condicional for wav format
@@ -216,10 +218,10 @@ def stop(): #Function stop
 
 #End Function stop
 
-""" Function checks:
+""" #Function checks:
 
 print("Im alavie")
-archivo = '/home/elcalak/Downloads/Angustia.wav'
+archivo = '/home/elcalak/Downloads/Berserk.mp3'
 load(archivo)
 play()
 sleep(5)
