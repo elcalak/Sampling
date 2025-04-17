@@ -177,7 +177,7 @@ def resume(): #Function resume
     
     #Finish Try 
     
-    except pygame.error as e: #Init except
+    except pg.error as e: #Init except
 
         print(f"Pygame error: {e}") #Print error message
         return None, False #Return none and false
@@ -209,11 +209,11 @@ def stop(): #Function stop
 
     #Finish Try 
     
-    except pygame.error as e: #Init except
+    except pg.error as e: #Init except
     
         print(f"Error to load or play the file: {file}") #Print error message
         print(f"Pygame error: {e}") #Print error message
-        return None, False #Return none and false
+        return None, False #Return none add false
     #Finish Except
 
 #End Function stop
