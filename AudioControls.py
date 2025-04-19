@@ -18,7 +18,7 @@ Compile in environment (in Arch): Environment/piplibs/bin/python
 
 """
 
-import pygame as pg #Call the module pygame as pg
+import pygame as pg #Call the module pygame as pg to playing audio
 from time import sleep #From module time import sleep function
 
 def load(file): #Function load files
@@ -218,10 +218,10 @@ def stop(): #Function stop
 
 #End Function stop
 
-""" #Function checks:
+""" Function checks:
 
 print("Im alavie")
-archivo = '/home/elcalak/Downloads/Berserk.mp3'
+archivo = '/home/elcalak/Repositorys/elcalak/Sampling/Records/recording_20250418_190024.wav'
 load(archivo)
 play()
 sleep(5)
