@@ -63,13 +63,14 @@ def RecMic(duration=5, fs=44100): #Function Record microphone
     
     #Init except
 
+"""
 def RecDesk(duration=5, fs=44100, channel = 2): #Function Record Desktop
 
     print(f"Starting record of {duration} seconds...") #Print start record message
 
     try: #Init try
     
-        recording = sd.rec(int(duration * fs), samplerate=fs, channels=channel, dtype='int16', device='Stereo Mix (Realtek(R) Audio)') #Rec desktop on stereo
+        recording = sd.rec(int(duration * fs), samplerate=fs, channels=channel, dtype='int16', device='Bocina Selfie-82') #Rec desktop on stereo
         sd.wait()  #Wait to rec finish
 
         output_dir = "Record desktop" #Define the folder save name
@@ -93,12 +94,13 @@ def RecDesk(duration=5, fs=44100, channel = 2): #Function Record Desktop
     except Exception as e: #Init except
         
         print(f"Rec error: {e}") #Print error message
-        print("Your mic works on?.") #Print first suggest
+        print("Your devices is correctly?.") #Print first suggest
         print("Verify the sound devices:") #Print second suggest
         print("python -m sounddevice") #Print verify instructions
         
         return None #Returns none
     
     #Init except
+"""
 
-RecDesk()
+#RecMic()
