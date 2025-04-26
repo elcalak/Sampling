@@ -20,8 +20,9 @@ This file needs tk pack for work if you dont have this pack use (in Arch): sudo 
 """
 
 import os #Call the module os to control path files 
-import tkinter as tk
-from tkinter import filedialog
+import tkinter as tk #Call the module Tkinter as tk to control file dialogs
+from tkinter import filedialog #From the module Tkinter call the metoth filedialog
+import json #Call the module json to save config files
 
 class AudioBank: #Start class Audio bank
 
@@ -78,6 +79,88 @@ class AudioBank: #Start class Audio bank
 
     #End create bank function
 
+    def SaveBank(self): # Function to save the bank configuration
+    
+        if not self.name or not self.base_path:
+             print("Cannot save bank. Name or base path is missing.")
+             print("Please create or load a bank first.")
+             return
+
+        root = tk.Tk()
+        root.withdraw()
+
+        # Prepare data to save
+        bank_data = {
+            "name": self.name,
+            "base_path": self.base_path,
+            "sounds": self.sounds
+        }
+
+        # Ask user where to save the file
+        file_path = filedialog.asksaveasfilename(
+            title=f"Save Bank Configuration '{self.name}'",
+            defaultextension=".json",
+            filetypes=[("JSON files", "*.json"), ("All files", "*.*")],
+            initialfile=f"{self.name}_bank.json" # Suggest a filename
+        )
+
+        root.destroy() # Clean up Tk instance
+
+        if file_path:
+            try:
+                with open(file_path, 'w') as f:
+                    json.dump(bank_data, f, indent=4) # Use indent for readability
+                print(f"Bank '{self.name}' saved successfully to: {file_path}")
+            except IOError as e:
+                print(f"Error saving bank configuration: {e}")
+            except Exception as e:
+                 print(f"An unexpected error occurred during saving: {e}")
+        else:
+            print("Save operation cancelled.")
+
+    # End SaveBank function
+
+    def LoadBank(self):
+
+        root = tk.Tk()
+        root.withdraw()
+
+        file_path = filedialog.askopenfilename(
+            title="Load Bank Configuration",
+            filetypes=[("JSON files", "*.json"), ("All files", "*.*")]
+        )
+
+        root.destroy()
+
+        if file_path:
+            try:
+                with open(file_path, 'r') as f:
+                    bank_data = json.load(f)
+
+                # Validate loaded data (basic check)
+                if "name" in bank_data and "base_path" in bank_data and "sounds" in bank_data:
+                    self.name = bank_data["name"]
+                    self.base_path = bank_data["base_path"]
+                    # Convert keys back to integers if needed (JSON saves keys as strings)
+                    self.sounds = {int(k): v for k, v in bank_data["sounds"].items()}
+                    print(f"Bank '{self.name}' loaded successfully from: {file_path}")
+                else:
+                    print("Error: Invalid bank configuration file format.")
+
+            except FileNotFoundError:
+                print(f"Error: File not found - {file_path}")
+            except json.JSONDecodeError:
+                print(f"Error: Could not decode JSON from file - {file_path}")
+            except IOError as e:
+                print(f"Error reading bank configuration file: {e}")
+            except Exception as e:
+                 print(f"An unexpected error occurred during loading: {e}")
+        else:
+            print("Load operation cancelled.")
+
+#End AudioBank class
+
 Bank1 = AudioBank()
 
 Bank1.CreateBank()
+Bank1.SaveBank()
