@@ -15,6 +15,7 @@ elcalak gh: https://github.com/elcalak
 
 Suggest:
 Compile in environment (in Arch): Environment/piplibs/bin/python
+This file needs tk pack for work if you dont have this pack use (in Arch): sudo pacman -S tk
 
 """
 
@@ -36,33 +37,47 @@ class AudioBank: #Start class Audio bank
         for i in range(1,10): #Init for to load the defualt audio files
             
             placeholder_path = os.path.join(self.base_path, f"slot{i}.wav") #Search the files in deafult path
-            print(f"Hi im slot{i}") #Work check
+            print(f"Hi im defualt slot{i}") #Work check
             self._sounds[i] = placeholder_path #Saves files in the sound library
         #End for
     
     #End constructor
 
-    def CreateBak(): #Function to create a new bank
+    def CreateBank(self): #Function to create a new bank
 
         root = tk.Tk() #Create a Tk object
         root.withdraw() #Hide the main dialog
 
         BankName = input("Select bank name: ") #Ask user to name for bank
 
-        Bank.name = BankName #Set the name assigned
-        Bank.base_path = filedialog.askdirectory(title = "Select folder",) #Set the base path from bank
+        self.name = BankName #Set the name assigned
+        self.base_path = filedialog.askdirectory(title = "Select folder",) #Set the base path from bank
 
         tk.Tk().destroy() #Close root dialog
 
-        if Bank.base_path: #Verify slection
+        if self.base_path: #Verify slection
             
-            print(f"Folder select: {Bank.base_path}") #Print Succes path select
+            print(f"Folder select: {self.base_path}") #Print Succes path select
+
+        #End verfify selection
 
         else: #Contradiction
 
             print("No folder select.") #Print error message
         
+        #End contradiction
+
+        self.sounds = {} #Create a sound library
+
         for i in range(1,10): #Init for to load the audio files
 
-            Bank.sounds[i] = filedialog.askopenfile(title = f"Select slot{i}") #Select audio files to slot
+            self.sounds[i] = filedialog.askopenfile(title = f"Select slot{i}") #Select audio files to slot
             print(f"Hi im slot{i}") #Work check
+        
+        #End for to load files
+
+    #End create bank function
+
+Bank1 = AudioBank()
+
+Bank1.CreateBank()
