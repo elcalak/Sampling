@@ -23,6 +23,7 @@ import os #Call the module os to control path files
 import tkinter as tk #Call the module Tkinter as tk to control file dialogs
 from tkinter import filedialog #From the module Tkinter call the metoth filedialog
 import json #Call the module json to save config files
+import AudioControls as ac #Call the objects from AudioControl
 
 class AudioBank: #Start class Audio bank
 
@@ -79,88 +80,157 @@ class AudioBank: #Start class Audio bank
 
     #End create bank function
 
-    def SaveBank(self): # Function to save the bank configuration
+    def SaveBank(self): #Function to save the bank configuration
     
-        if not self.name or not self.base_path:
-             print("Cannot save bank. Name or base path is missing.")
-             print("Please create or load a bank first.")
+        if not self.name or not self.base_path: #Verify path and name from bank
+             
+             print("Cannot save bank. Name or base path is missing.") #Print error message
+             print("Please create or load a bank first.") #Print suggest message
+             
              return
 
-        root = tk.Tk()
-        root.withdraw()
+        root = tk.Tk() #Create a Tk object
+        root.withdraw() #Hide main dialog
 
         # Prepare data to save
-        bank_data = {
-            "name": self.name,
-            "base_path": self.base_path,
-            "sounds": self.sounds
-        }
+
+        bank_data = { #Create a bank data list
+            
+            "name": self.name, #Name from bank
+            "base_path": self.base_path, #Path from bank
+            "sounds": self.sounds #Sound path from bank
+        
+        } #End list
 
         # Ask user where to save the file
-        file_path = filedialog.asksaveasfilename(
-            title=f"Save Bank Configuration '{self.name}'",
-            defaultextension=".json",
-            filetypes=[("JSON files", "*.json"), ("All files", "*.*")],
-            initialfile=f"{self.name}_bank.json" # Suggest a filename
-        )
+        file_path = filedialog.asksaveasfilename( #Open file dialog to chose name to save
+
+            title=f"Save Bank Configuration '{self.name}'", #Title from Tk form
+            defaultextension=".json", #Extension from archive
+            filetypes=[("JSON files", "*.json"), ("All files", "*.*")], #File type search
+            initialfile=f"{self.name}_bank.json" #Suggest a filename
+        
+        ) #End dialog
 
         root.destroy() # Clean up Tk instance
 
-        if file_path:
-            try:
-                with open(file_path, 'w') as f:
-                    json.dump(bank_data, f, indent=4) # Use indent for readability
-                print(f"Bank '{self.name}' saved successfully to: {file_path}")
-            except IOError as e:
-                print(f"Error saving bank configuration: {e}")
-            except Exception as e:
-                 print(f"An unexpected error occurred during saving: {e}")
-        else:
-            print("Save operation cancelled.")
+        if file_path: #Verify path
+            
+            try: #Init try
+            
+                with open(file_path, 'w') as f: #Verify path
+            
+                    json.dump(bank_data, f, indent=4) #Use indent for readability
+            
+                print(f"Bank '{self.name}' saved successfully to: {file_path}") #Save file message
+                #End with
+            
+            #End try
+
+            except IOError as e: #Init except Input/output error
+                
+                print(f"Error saving bank configuration: {e}") #Print error message
+            
+            #End except
+
+            except Exception as e: #Init except for unexcepted error
+            
+                 print(f"An unexpected error occurred during saving: {e}") #Print error message
+
+            #End except
+        
+        else: #Contradiction
+        
+            print("Save operation cancelled.") #Print message
+        
+        #End else
 
     # End SaveBank function
 
-    def LoadBank(self):
+    def LoadBank(self): #Function to load the bank configuration
 
-        root = tk.Tk()
-        root.withdraw()
+        root = tk.Tk() #Create a Tk object
+        root.withdraw() #Hide main dialog
 
-        file_path = filedialog.askopenfilename(
-            title="Load Bank Configuration",
-            filetypes=[("JSON files", "*.json"), ("All files", "*.*")]
-        )
+        file_path = filedialog.askopenfilename( #Open file dialog to chose file
+            
+            title="Load Bank Configuration", #Title from Tk form
+            filetypes=[("JSON files", "*.json"), ("All files", "*.*")] #File type search
+        
+        ) #End dialog
 
-        root.destroy()
+        root.destroy() #Clean up Tk instance
 
-        if file_path:
-            try:
-                with open(file_path, 'r') as f:
-                    bank_data = json.load(f)
+        if file_path: #Verify path
+
+            try: #Init try
+
+                with open(file_path, 'r') as f: #Verify path
+                
+                    bank_data = json.load(f) #Load data
 
                 # Validate loaded data (basic check)
-                if "name" in bank_data and "base_path" in bank_data and "sounds" in bank_data:
-                    self.name = bank_data["name"]
-                    self.base_path = bank_data["base_path"]
-                    # Convert keys back to integers if needed (JSON saves keys as strings)
-                    self.sounds = {int(k): v for k, v in bank_data["sounds"].items()}
-                    print(f"Bank '{self.name}' loaded successfully from: {file_path}")
-                else:
-                    print("Error: Invalid bank configuration file format.")
+                #End with
+                
+                if "name" in bank_data and "base_path" in bank_data and "sounds" in bank_data: #Verify data
+                
+                    self.name = bank_data["name"] #Load name bank
 
-            except FileNotFoundError:
-                print(f"Error: File not found - {file_path}")
-            except json.JSONDecodeError:
-                print(f"Error: Could not decode JSON from file - {file_path}")
-            except IOError as e:
-                print(f"Error reading bank configuration file: {e}")
-            except Exception as e:
-                 print(f"An unexpected error occurred during loading: {e}")
-        else:
-            print("Load operation cancelled.")
+                    self.base_path = bank_data["base_path"] #Load bank path
+                    
+                    # Convert keys back to integers if needed (JSON saves keys as strings)
+                    
+                    self.sounds = {int(k): v for k, v in bank_data["sounds"].items()}
+                
+                    print(f"Bank '{self.name}' loaded successfully from: {file_path}") #Load file message
+                
+                #End load data
+
+                else: #Contradiction
+                
+                    print("Error: Invalid bank configuration file format.") #Print error message
+
+                #End contradiction
+
+            except FileNotFoundError: #Init except for File not found
+                
+                print(f"Error: File not found - {file_path}") #Print error message
+            
+            #End except File not found
+
+            except json.JSONDecodeError: #Init except JSON decode error
+            
+                print(f"Error: Could not decode JSON from file - {file_path}") #Print error message
+            
+            #End except JSON decode error
+
+            except IOError as e: #Init except Input/output error
+            
+                print(f"Error reading bank configuration file: {e}") #Print error message
+            
+            #End except Input/output error
+
+            except Exception as e: #Init except for unespected error
+            
+                 print(f"An unexpected error occurred during loading: {e}") #Print error message
+
+            #End except unspected error
+
+        else: #Contradiction
+            
+            print("Load operation cancelled.") #Print message
+        
+        #End contradiction
+
+    #End LoadBank function
 
 #End AudioBank class
+
+#""" Work chek lines:
 
 Bank1 = AudioBank()
 
 Bank1.CreateBank()
 Bank1.SaveBank()
+
+#""" End work check lines
