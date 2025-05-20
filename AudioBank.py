@@ -27,7 +27,7 @@ import AudioControls as ac #Call the objects from AudioControl
 
 class AudioBank: #Start class Audio bank
 
-    DEFAULT_BANK_PATH = "/home/elcalak/Repositorys/elcalak/Sampling/AudioBanks/Default" #Set default path for default bank
+    DEFAULT_BANK_PATH = "/home/elcalak/Repositories/elcalak/Sampling/AudioBanks/Default" #Set default path for default bank
 
     def __init__(self, name="DefaultBank"): #Init contructor to default bank
 
@@ -36,13 +36,43 @@ class AudioBank: #Start class Audio bank
 
         self._sounds = {} #Create a sound library 
 
+        if self.base_path: #Verify path
+        
+            print(f"Default folder select: {self.base_path}") #Print Succes path select
+        
+        #End verify path
+
+        else: #Contradiction
+            
+            print("No default folder select.") #Print error message
+            return #Return to the main function
+        
+        #End contradiction
+
         for i in range(1,10): #Init for to load the defualt audio files
             
-            placeholder_path = os.path.join(self.base_path, f"slot{i}.wav") #Search the files in deafult path
-            print(f"Hi im defualt slot{i}") #Work check
-            self._sounds[i] = placeholder_path #Saves files in the sound library
+            file = os.path.join(self.base_path, f"slot{i}.wav") #Search the files in deafult path
+            
+            if file: #Verify if the file exist
+            
+                print(f"Hi im defualt slot{i}") #Work check
+                self._sounds[i] = file #Saves files in the sound library
+
+            #End verify if the file exist
+
+            else: #Contradiction
+                
+                print(f"File not found: {file}") #Print error message
+                return #Return to the main function
+            
+            #End contradiction
+
         #End for
-    
+
+        #print(self._sounds) #Work check
+
+        ac.load(self._sounds) #Load the files in the AudioControl module
+
     #End constructor
 
     def CreateBank(self): #Function to create a new bank
@@ -66,17 +96,33 @@ class AudioBank: #Start class Audio bank
         else: #Contradiction
 
             print("No folder select.") #Print error message
+            return #Return to the main function
         
         #End contradiction
 
         self.sounds = {} #Create a sound library
-
+        
         for i in range(1,10): #Init for to load the audio files
 
-            self.sounds[i] = filedialog.askopenfile(title = f"Select slot{i}") #Select audio files to slot
-            print(f"Hi im slot{i}") #Work check
+            file = filedialog.askopenfile(title = f"Select slot{i}") #Select audio files to slot
+            
+            if file.exists(): #Verify if the file exist
+
+                self.sounds[i] = file #Saves files in the sound library
+                print(f"Hi im slot{i}") #Work check
         
+            #End verify if the file exist
+            
+            else: #Contradiction
+
+                print(f"File not found: {file}") #Print error message
+                return #Return to the main function
+            
+            #End contradiction
+
         #End for to load files
+        
+        ac.load(self.sounds) #Load the files in the AudioControl module
 
     #End create bank function
 
@@ -184,6 +230,8 @@ class AudioBank: #Start class Audio bank
                 
                     print(f"Bank '{self.name}' loaded successfully from: {file_path}") #Load file message
                 
+                    ac.load(self.sounds) #Load the files in the AudioControl module
+                
                 #End load data
 
                 else: #Contradiction
@@ -230,7 +278,7 @@ class AudioBank: #Start class Audio bank
 
 Bank1 = AudioBank()
 
-Bank1.CreateBank()
-Bank1.SaveBank()
+#Bank1.CreateBank()
+#Bank1.SaveBank()
 
 #""" End work check lines

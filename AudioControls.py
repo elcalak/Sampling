@@ -23,7 +23,10 @@ from time import sleep #From module time import sleep function
 
 def load(file): #Function load files
     
-    global sound, file_type #Global variable sound to save the current audio
+    global sound, file_type
+    sound = [None] * 10 #Global variable sound to save the current audio
+    file_type = [None] * 10 #Global variable to known type of file
+    
     print("Im load fun!") #Line for work check
 
     try: #Init try
@@ -32,28 +35,36 @@ def load(file): #Function load files
 
         pg.mixer.init() #Start module mixer from pygame
         print("Hey im starting the mixer!") #Line for work check
+        
+        for i in range(1,10):
 
-        if file.endswith(".mp3") or file.endswith(".ogg"): #Start condicional for compress format
+            if file[i].endswith(".mp3") or file[i].endswith(".ogg"): #Start condicional for compress format
             
-            pg.mixer.music.load(file) #Load MP3
-            print("Im loadmp3 fun!") #Line for work check
-            file_type = "mp3"
-            return pg.mixer.music, True #Return pygame mixer
-        #Finish condicional for compress formats
+                sound[i] = pg.mixer.music.load(file[i]) #Load MP3
+                print(f"Im loadmp3 {i}!") #Line for work check
+                file_type[i] = "mp3"
+                #return pg.mixer.music, True #Return pygame mixer
+            #Finish condicional for compress formats
 
-        elif file.endswith(".wav"): #Start condicional for wav format
+            elif file[i].endswith(".wav"): #Start condicional for wav format
             
-            sound = pg.mixer.Sound(file) #Load WAV
-            print("Im loadwav fun!") #Line for work check
-            file_type = "wav"
-            return sound, True #Return pygame mixer
-        #Finish condicional for wav format
+                sound[i] = pg.mixer.Sound(file[i]) #Load WAV
+                print(f"Im loadwav {i}!") #Line for work check
+                file_type[i] = "wav"
+                #return sound, True #Return pygame mixer
+            #Finish condicional for wav format
 
-        else: #Start the last condicional 
+            else: #Start the last condicional 
 
-            print("No supported format") #Print error menssage for no supported formats
-        #Finish condicional
+               print("No supported format") #Print error menssage for no supported formats
+            #Finish condicional
        
+        #Finish for to load audio files
+
+        print("Load fun Work Succes!") #Line for work check
+        #print(sound) #Line for work check
+        return sound, True #Return pygame mixer
+
     #Finish Try 
     
     except pg.error as e: #Init except
@@ -61,12 +72,14 @@ def load(file): #Function load files
         print(f"Error to load or play the file: {file}") #Print error message
         print(f"Pygame error: {e}") #Print error message
         return None, False #Return none and false
+    
     #Finish Except
 
     except FileNotFoundError: #Init except
         
         print(f"File: {file} not found") #Print error message
         return None, False #Return none and false
+    
     #Finish Except
 
 #End Function load
@@ -218,10 +231,10 @@ def stop(): #Function stop
 
 #End Function stop
 
-""" Function checks:
+"""#Function checks:
 
 print("Im alavie")
-archivo = '/home/elcalak/Repositorys/elcalak/Sampling/Records/recording_20250418_190024.wav'
+archivo = '/home/elcalak/Repositories/elcalak/Sampling/Records/recording_20250511_222232.wav'
 load(archivo)
 play()
 sleep(5)
@@ -231,4 +244,4 @@ resume()
 sleep(5)
 stop()
 
-"""
+#"""
