@@ -86,8 +86,10 @@ def load(file): #Function load files
 
 def play(): #Function play
 
-    print("Im play fun!") #Line for work check
     global song_status
+    song_status = [None] * 10 #Global variable playsound to save the current status of sound
+
+    print("Im play fun!") #Line for work check
 
     try: #Init try
         
