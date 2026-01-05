@@ -1,0 +1,15 @@
+{
+    "name": "Bank1",
+    "base_path": "/home/elcalak/Repositories/elcalak/Sampling/AudioBanks",
+    "sounds": {
+        "1": "/home/elcalak/Repositories/elcalak/Sampling/AudioBanks/Default/slot1.wav",
+        "2": "/home/elcalak/Repositories/elcalak/Sampling/AudioBanks/Default/slot2.wav",
+        "3": "/home/elcalak/Repositories/elcalak/Sampling/AudioBanks/Default/slot3.wav",
+        "4": "/home/elcalak/Repositories/elcalak/Sampling/AudioBanks/Default/slot4.wav",
+        "5": "/home/elcalak/Repositories/elcalak/Sampling/AudioBanks/Default/slot5.wav",
+        "6": "/home/elcalak/Repositories/elcalak/Sampling/AudioBanks/Default/slot6.wav",
+        "7": "/home/elcalak/Repositories/elcalak/Sampling/AudioBanks/Default/slot7.wav",
+        "8": "/home/elcalak/Repositories/elcalak/Sampling/AudioBanks/Default/slot8.wav",
+        "9": "/home/elcalak/Repositories/elcalak/Sampling/AudioBanks/Default/slot9.wav"
+    }
+}

@@ -84,7 +84,7 @@ def load(file): #Function load files
 
 #End Function load
 
-def play(): #Function play
+def play(sample): #Function play
 
     global song_status
     song_status = [None] * 10 #Global variable playsound to save the current status of sound
@@ -106,7 +106,7 @@ def play(): #Function play
         else: #Start condicional for wav format
             
             global status_sound #Global variable playsound to save the current status of sound
-            status_sound = sound.play() #Start play
+            status_sound = sample.play() #Start play
             print("Im playwav fun!") #Line for work check
             song_status = False
             return sound, True #Return pygame mixer

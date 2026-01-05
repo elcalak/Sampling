@@ -102,11 +102,13 @@ class AudioBank: #Start class Audio bank
 
         self.sounds = {} #Create a sound library
         
+        print("Select audio files for the bank:") #Print message to select audio files
+
         for i in range(1,10): #Init for to load the audio files
 
-            file = filedialog.askopenfile(title = f"Select slot{i}") #Select audio files to slot
+            file = filedialog.askopenfilename(title = f"Select slot{i}") #Select audio files to slot
             
-            if file.exists(): #Verify if the file exist
+            if file: #Verify if the file exist
 
                 self.sounds[i] = file #Saves files in the sound library
                 print(f"Hi im slot{i}") #Work check
@@ -122,8 +124,24 @@ class AudioBank: #Start class Audio bank
 
         #End for to load files
         
-        ac.load(self.sounds) #Load the files in the AudioControl module
+        #ac.load(self.sounds) #Load the files in the AudioControl module
+        
+        print("Bank created successfully.") #Print succes message
+        print("Do you want to save the bank configuration? (y/n)") #Ask user to save the bank configuration
 
+        save_option = input().lower() #Input save option and convert to lowercase
+
+        if save_option == 'y': #If user want to save the bank
+            
+            self.SaveBank() #Call SaveBank function
+
+        elif save_option == 'n': #If user dont want to save the bank
+            
+            print("Bank not saved.") #Print message
+        
+        #End if save option
+        
+        return self.sounds
     #End create bank function
 
     def SaveBank(self): #Function to save the bank configuration
@@ -230,7 +248,7 @@ class AudioBank: #Start class Audio bank
                 
                     print(f"Bank '{self.name}' loaded successfully from: {file_path}") #Load file message
                 
-                    ac.load(self.sounds) #Load the files in the AudioControl module
+                    #ac.load(self.sounds) #Load the files in the AudioControl module
                 
                 #End load data
 
@@ -270,13 +288,15 @@ class AudioBank: #Start class Audio bank
         
         #End contradiction
 
+        return self.sounds
+
     #End LoadBank function
 
 #End AudioBank class
 
 #""" Work chek lines:
 
-Bank1 = AudioBank()
+#Bank1 = AudioBank()
 
 #Bank1.CreateBank()
 #Bank1.SaveBank()

@@ -103,4 +103,4 @@ def RecDesk(duration=5, fs=44100, channel = 2): #Function Record Desktop
     #Init except
 """
 
-RecMic()
+#RecMic()
