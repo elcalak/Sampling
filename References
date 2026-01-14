@@ -2,3 +2,39 @@ Audio record and modifications:
 
 https://realpython.com/playing-and-recording-sound-python/#recording-audio
 https://www.youtube.com/watch?v=K6sf7sFkJhI
+
+Scrip bash:
+
+#!/bin/bash
+
+# Detener el script si ocurre algún error
+set -e
+
+# Nombre de la carpeta del entorno virtual
+ENV_DIR="env"
+
+echo "📦 Creando entorno virtual en '$ENV_DIR'..."
+
+# Crear el entorno virtual
+python3 -m venv "$ENV_DIR"
+
+echo "✅ Entorno creado"
+
+# Activar el entorno
+echo "⚙️ Activando entorno virtual..."
+source "$ENV_DIR/bin/activate"
+
+# Actualizar pip (opcional pero recomendado)
+pip install --upgrade pip
+
+# Instalar dependencias
+if [ -f requirements.txt ]; then
+    echo "📥 Instalando dependencias..."
+    pip install -r requirements.txt
+else
+    echo "⚠️ No se encontró requirements.txt"
+fi
+
+echo "🎉 Entorno listo"
+echo "👉 Para activarlo manualmente ejecuta:"
+echo "   source $ENV_DIR/bin/activate"

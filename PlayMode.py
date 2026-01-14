@@ -117,11 +117,13 @@ class PlayModes:
     def StepSeq(self, sound): #Start function stepseq with sound parameter
 
         # Step Sequencer: 4/4 x pattern, 16 steps, each step can trigger a sample
-        slots_tuple = ac.load(sound)
-        slots = slots_tuple[0]
+        slots_tuple = ac.load(sound) # Load samples using AudioControls module
+        slots = slots_tuple[0] #Convert the sample tuple to a list
 
-        num_steps = 16
-        sequence = [None] * num_steps  # Each step can hold a sample index
+        num_steps = 16 #Number of steps in the sequencer
+        sequences = {}  # Index to multiple seq, ej: {'A': [...], 'B': [...]}
+        current_seq = 'A' #Sequence currently being edited
+        sequences[current_seq] = [[] for _ in range(num_steps)] #Start with A empty sequence
         tempo = 120  # Default tempo in BPM
 
         sleep(1) #Sleep 1 seconds
@@ -130,94 +132,197 @@ class PlayModes:
         
         print("\tStep Sequencer Mode") #Title message
         print("Assign samples to steps (1-16).") #Instructions assign samples
-        print("Type 'play' to play the sequence, 'show' to display, 'clear' to reset, 'tempo' to change tempo, 'q' to quit.") #Command instructions
-
+        print("Type 'play [seqs]' to play sequences, 'loop [seqs]' to loop sequences, 'show' to display, 'clear' to reset, 'tempo' to change tempo, 'seq' to change or create a sequence, 'q' to quit.") #Command instructions
+        print("To assign multiple samples to a step: step# sample# sample# ... (e.g., 1 2 3 4)") #Assign multiple samples instruction
+        print("Example to change or create a sequence: seq B") #To change sequence example
+        
         while True: #Infinite loop for step sequencer commands
             
-            cmd = input("Command (step# sample#, play, show, clear, tempo, q): ").strip() #Input command
+            cmd = input(f"[Sequence {current_seq}] Command (step# sample# (sample#), play, loop, show, clear, tempo, seq, q): ").strip() #Input command
 
             if cmd == 'q': #If command is 'q'
                 
                 print("Exiting Step Sequencer Mode.") #Exit message
                 break #Break the loop
 
-            elif cmd == 'play': #If command is 'play'
+            elif cmd.startswith('play'): #If command starts with 'play'
                 
-                print(f"Playing sequence at {tempo} BPM...") #Play message
+                parts = cmd.split() #Split command
+                seqs_to_play = [] #List of sequences
+
+                if len(parts) == 1: #If no args
+                    seqs_to_play = [current_seq] #Play current
+                else: #If args
+                    for s in parts[1:]: #Iterate args
+                        s_upper = s.upper() #Upper case
+                        if s_upper in sequences: #If exists
+                            seqs_to_play.append(s_upper) #Add to list
+                        else: #If not exists
+                            print(f"Sequence '{s}' not found. Skipping.") #Print skip
                 
-                # Calculate the duration of a quarter note (beat)
+                if not seqs_to_play: #If empty
+                    print("No valid sequences to play.") #Print error
+                    continue #Continue loop
+
+                print(f"Playing sequences {seqs_to_play} at {tempo} BPM...") #Play message
                 beat_duration = 60 / tempo  # seconds per beat
-                # For a 16-step sequencer in 4/4, each step is a 16th note
                 step_duration = beat_duration / 4  # 16th note = quarter note / 4
 
-                for i, sample_idx in enumerate(sequence): #Iterate over the sequence
-                    
-                    print(f"Step {i+1}: ", end='') #Print current step
-                    
-                    if sample_idx is not None and sample_idx < len(slots) and slots[sample_idx] is not None: #If sample exist and slot is load
-                    
-                        print(f"Playing sample {sample_idx}") #Print playing sample message
-                        ac.play(slots[sample_idx]) #Play the sample using AudioControls module
-                    
-                    else: #Else
-                    
-                        print("No sample") #Print no sample message
-                    
-                    sleep(step_duration) #Wait for the duration of the step
+                for seq in seqs_to_play: #Iterate sequences
+                    print(f"Sequence {seq}:") #Print sequence name
+                    for i, sample_idxs in enumerate(sequences[seq]): #Iterate over the sequence
+                
+                        print(f"Step {i+1}: ", end='') #Print current step
+                
+                        if sample_idxs: #If there are samples assigned to this step
+                
+                            print(f"Playing samples {sample_idxs}") #Print playing samples message
+                
+                            for sample_idx in sample_idxs: #Play all samples assigned to this step
+                
+                                if sample_idx < len(slots) and slots[sample_idx] is not None:
+                
+                                    ac.play(slots[sample_idx])
+                
+                        else:
+                
+                            print("No samples") #Print no samples message
+                
+                        sleep(step_duration) #Wait for the duration of the step
+
+            elif cmd.startswith('loop'): #If command starts with 'loop'
+                
+                parts = cmd.split() #Split command
+                seqs_to_play = [] #List of sequences
+
+                if len(parts) == 1: #If no args
+                    seqs_to_play = [current_seq] #Loop current
+                else: #If args
+                    for s in parts[1:]: #Iterate args
+                        s_upper = s.upper() #Upper case
+                        if s_upper in sequences: #If exists
+                            seqs_to_play.append(s_upper) #Add to list
+                        else: #If not exists
+                            print(f"Sequence '{s}' not found. Skipping.") #Print skip
+                
+                if not seqs_to_play: #If empty
+                    print("No valid sequences to loop.") #Print error
+                    continue #Continue loop
+
+                print(f"Looping sequences {seqs_to_play} at {tempo} BPM...") #Play message
+                print("Press Ctrl+C to stop looping.") #Loop info message
+                
+                beat_duration = 60 / tempo  # seconds per beat
+                step_duration = beat_duration / 4  # 16th note = quarter note / 4
+
+                try: #Try block to allow stopping with Ctrl+C
+                
+                    while True: #Loop forever until interrupted
+                
+                        for seq in seqs_to_play: #Iterate sequences
+                            print(f"Sequence {seq}:") #Print sequence name
+                            for i, sample_idxs in enumerate(sequences[seq]): #Iterate over the sequence
+                
+                                print(f"Step {i+1}: ", end='') #Print current step
+                
+                                if sample_idxs: #If there are samples assigned to this step
+                
+                                    print(f"Playing samples {sample_idxs}") #Print playing samples message
+                
+                                    for sample_idx in sample_idxs: #Play all samples assigned to this step
+                
+                                        if sample_idx < len(slots) and slots[sample_idx] is not None:
+                
+                                            ac.play(slots[sample_idx])
+                                else:
+                
+                                    print("No samples") #Print no samples message
+                
+                                sleep(step_duration) #Wait for the duration of the step
+                
+                except KeyboardInterrupt: #Catch Ctrl+C to exit loop
+                    print("\nStopped looping playback.") #Stop message
 
             elif cmd == 'show': #If command is 'show'
                 
-                for i, sample_idx in enumerate(sequence): #Iterate over the sequence
+                for i, sample_idxs in enumerate(sequences[current_seq]): #Iterate over the sequence
                 
-                    sample_name = slots[sample_idx] if sample_idx is not None and sample_idx < len(slots) else "None" #Get sample name or None
-                    print(f"Step {i+1}: {sample_name}") #Print step and sample name
+                    if sample_idxs:
+                
+                        sample_names = [slots[idx] if idx < len(slots) else "None" for idx in sample_idxs]
+                        print(f"Step {i+1}: {sample_names}") #Print step and sample names
+                
+                    else:
+                
+                        print(f"Step {i+1}: None") #Print step and None
 
             elif cmd == 'clear': #If command is 'clear'
-               
-                sequence = [None] * num_steps #Reset the sequence
-                print("Sequence cleared.") #Clear message
+                
+                sequences[current_seq] = [[] for _ in range(num_steps)] #Reset the sequence to empty lists
+                print(f"Sequence '{current_seq}' cleared.") #Clear message
 
             elif cmd.startswith('tempo'): #If command start with 'tempo'
-               
+                
                 try: #Try block to change tempo
-               
+                
                     _, new_tempo = cmd.split() #Split command to get new tempo
                     new_tempo = int(new_tempo) #Convert new tempo to integer
-               
+                
                     if new_tempo > 0: #If new tempo is positive
-               
+                
                         tempo = new_tempo #Set the new tempo
                         print(f"Tempo set to {tempo} BPM.") #Set tempo message
-               
+                
                     else: #Else
-               
+                
                         print("Tempo must be positive.") #Invalid tempo message
-               
+                
                 except Exception: #Except block for invalid tempo command
-               
+                
                     print("Invalid command format. Use: tempo BPM") #Invalid command message
 
-            else: #else
-
-                # Assign sample to step: format "step# sample#"
-
-                try: #Try block to assign sample to step
-
-                    step_str, sample_str = cmd.split() #Split command to get step and sample
-                    step = int(step_str) - 1 #Convert step to integer and adjust for 0-based index
-                    sample_idx = int(sample_str) #Convert sample index to integer
-
-                    if 0 <= step < num_steps and 0 <= sample_idx < len(slots): #If step and sample index are valid
-
-                        sequence[step] = sample_idx #Assign sample to the step
-                        print(f"Assigned sample {sample_idx} to step {step+1}") #Assign message
-
+            elif cmd.startswith('seq'): #If command is 'seq'
+                
+                try: #Try block to change or create sequence
+                
+                    _, seq_name = cmd.split() #Get sequence name
+                    seq_name = seq_name.upper() #Convert to uppercase
+                
+                    if seq_name not in sequences: #If sequence not exists
+                
+                        sequences[seq_name] = [[] for _ in range(num_steps)] #Create new sequence
+                        print(f"Seq '{seq_name}' Created y selected.") #Created message
+                
                     else: #Else
+                
+                        print(f"Seq '{seq_name}' Selected.") #Selected message
+                
+                    current_seq = seq_name #Set current sequence
+                
+                except Exception: #Catch exception
+                    print("Format: seq Name") #Invalid format message
 
+            else: #else
+                
+                # Assign samples to step: format "step# sample# [sample# ...]"
+                
+                try: #Try block to assign samples to step
+                
+                    parts = cmd.split() 
+                    step = int(parts[0]) - 1 #Convert step to integer and adjust for 0-based index
+                    sample_idxs = [int(idx) for idx in parts[1:]] #Convert all sample indices to integers
+                
+                    if 0 <= step < num_steps and all(0 <= idx < len(slots) for idx in sample_idxs): #If step and all sample indices are valid
+                
+                        sequences[current_seq][step] = sample_idxs #Assign list of samples to the step
+                        print(f"Assigned samples {sample_idxs} to step {step+1} in sequence '{current_seq}'") #Assign message
+                
+                    else: #Else
+                
                         print("Invalid step or sample index.") #Invalid index message
-
+                
                 except Exception: #Except block for invalid assign command
-
-                    print("Invalid command format. Use: step# sample#") #Invalid command message
-        
+                
+                    print("Invalid command format. Use: step# sample# [sample# ...]") #Invalid command message
+         
     #End StepSeq
