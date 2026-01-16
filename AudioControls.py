@@ -14,7 +14,7 @@ Created by:
 elcalak gh: https://github.com/elcalak 
 
 Suggest:
-Compile in environment (in Arch): Environment/piplibs/bin/python
+Compile in environment: Use Environment.sh to install all dependencies
 
 """
 
@@ -89,16 +89,16 @@ def play(sample): #Function play
     global song_status
     song_status = [None] * 10 #Global variable playsound to save the current status of sound
 
-    print("Im play fun!") #Line for work check
+    #print("Im play fun!") #Line for work check
 
     try: #Init try
         
-        print("Hi im play try!") #Line for work check
+        #print("Hi im play try!") #Line for work check
 
         if file_type == "mp3": #Start condicional for compress format
             
             pg.mixer.music.play() #Start play
-            print("Im playmp3 fun!") #Line for work check
+            #print("Im playmp3 fun!") #Line for work check
             song_status = True
             return pg.mixer.music, True #Return pygame mixer
         #Finish condicional for compress formats
@@ -107,7 +107,7 @@ def play(sample): #Function play
             
             global status_sound #Global variable playsound to save the current status of sound
             status_sound = sample.play() #Start play
-            print("Im playwav fun!") #Line for work check
+            #print("Im playwav fun!") #Line for work check
             song_status = False
             return sound, True #Return pygame mixer
         #Finish condicional for wav format
@@ -124,25 +124,25 @@ def play(sample): #Function play
 
 def pause(): #Function pause
 
-    print("Im pause fun!") #Line for work check
+    #print("Im pause fun!") #Line for work check
 
     try: #Init try
         
-        print("Hi im pause try!") #Line for work check
+        #print("Hi im pause try!") #Line for work check
 
         if song_status == True or status_sound.get_busy() == True: #Start condicional know if music is played
         
             if file_type == "mp3": #Start condicional for compress format
             
                 pg.mixer.music.pause() #Start pause
-                print("Im pausemp3 fun!") #Line for work check
+                #print("Im pausemp3 fun!") #Line for work check
                 return pg.mixer.music, True #Return pygame mixer
             #Finish condicional for compress formats
 
             else: #Start condicional for wav format
             
                 status_sound.pause() #Start pause
-                print("Im pausewav fun!") #Line for work check
+                #print("Im pausewav fun!") #Line for work check
                 return sound, True #Return pygame mixer
             #Finish condicional for wav format
        
@@ -163,7 +163,7 @@ def pause(): #Function pause
 
 def resume(): #Function resume
 
-    print("Im resume fun!") #Line for work check
+    #print("Im resume fun!") #Line for work check
 
     try: #Init try
         
@@ -174,14 +174,14 @@ def resume(): #Function resume
             if file_type == "mp3": #Start condicional for compress format
             
                 pg.mixer.music.unpause() #Start resume
-                print("Im resumemp3 fun!") #Line for work check
+                #print("Im resumemp3 fun!") #Line for work check
                 return pg.mixer.music, True #Return pygame mixer
             #Finish condicional for compress formats
 
             else: #Start condicional for wav format
             
                 status_sound.unpause() #Start resume
-                print("Im resumewav fun!") #Line for work check
+                #print("Im resumewav fun!") #Line for work check
                 return sound, True #Return pygame mixer
             #Finish condicional for wav format
        
@@ -202,23 +202,23 @@ def resume(): #Function resume
 
 def stop(): #Function stop
     
-    print("Im stop fun!") #Line for work check
+    #print("Im stop fun!") #Line for work check
 
     try: #Init try
         
-        print("Hi im a stop try!") #Line for work check
+        #print("Hi im a stop try!") #Line for work check
 
         if file_type == "mp3": #Start condicional for compress format
             
             pg.mixer.music.stop() #Stop play
-            print("Im stopmp3 fun!") #Line for work check
+            #print("Im stopmp3 fun!") #Line for work check
             return pg.mixer.music, True #Return pygame mixer
         #Finish condicional for compress formats
 
         else: #Start condicional for wav format
 
             sound.stop() #Stop play
-            print("Im stopwav fun!") #Line for work check
+            #print("Im stopwav fun!") #Line for work check
             return sound, True #Return pygame mixer
         #Finish condicional for wav format
 

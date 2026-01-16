@@ -14,7 +14,7 @@ Created by:
 elcalak gh: https://github.com/elcalak 
 
 Suggest:
-Compile in environment (in Arch): Environment/piplibs/bin/python
+Compile in environment: Use Environment.sh to install all dependencies 
 This file needs tk pack for work if you dont have this pack use (in Arch): sudo pacman -S tk
 
 """
@@ -24,9 +24,12 @@ from time import sleep #From module time import sleep function
 import AudioBank as ab #Call the module from Control audio banks
 import AudioControls as ac #Call the module from Control audio
 import RecordSamp as rs #Call the module from Record Samples
-import sys #Call sys module
+import sys #Call sys module 
 import termios #Call termios module
 import tty #Call tty module
+import json #Call json module
+import tkinter as tk #Call tkinter module
+from tkinter import filedialog #Call filedialog module
 
 class PlayModes:
 
@@ -132,13 +135,13 @@ class PlayModes:
         
         print("\tStep Sequencer Mode") #Title message
         print("Assign samples to steps (1-16).") #Instructions assign samples
-        print("Type 'play [seqs]' to play sequences, 'loop [seqs]' to loop sequences, 'show' to display, 'clear' to reset, 'tempo' to change tempo, 'seq' to change or create a sequence, 'q' to quit.") #Command instructions
+        print("Type 'play [seqs]' to play sequences, 'loop [seqs]' to loop [seqs], 'show' to display, 'clear' to reset, 'tempo [tempo]' to change tempo\n'seq [seq]' to change or create a sequence, 'save [name]' to save patterns, 'load [name]' to load patterns, 'q' to quit.") #Command instructions
         print("To assign multiple samples to a step: step# sample# sample# ... (e.g., 1 2 3 4)") #Assign multiple samples instruction
         print("Example to change or create a sequence: seq B") #To change sequence example
         
         while True: #Infinite loop for step sequencer commands
             
-            cmd = input(f"[Sequence {current_seq}] Command (step# sample# (sample#), play, loop, show, clear, tempo, seq, q): ").strip() #Input command
+            cmd = input(f"[Sequence {current_seq}] Command (step# sample# (sample#), play, loop, show, clear, tempo, seq, save, load, q): ").strip() #Input command
 
             if cmd == 'q': #If command is 'q'
                 
@@ -151,17 +154,27 @@ class PlayModes:
                 seqs_to_play = [] #List of sequences
 
                 if len(parts) == 1: #If no args
+                
                     seqs_to_play = [current_seq] #Play current
+                
                 else: #If args
+                
                     for s in parts[1:]: #Iterate args
+                
                         s_upper = s.upper() #Upper case
+                
                         if s_upper in sequences: #If exists
+                
                             seqs_to_play.append(s_upper) #Add to list
+                
                         else: #If not exists
+                
                             print(f"Sequence '{s}' not found. Skipping.") #Print skip
                 
                 if not seqs_to_play: #If empty
+                
                     print("No valid sequences to play.") #Print error
+                
                     continue #Continue loop
 
                 print(f"Playing sequences {seqs_to_play} at {tempo} BPM...") #Play message
@@ -169,7 +182,9 @@ class PlayModes:
                 step_duration = beat_duration / 4  # 16th note = quarter note / 4
 
                 for seq in seqs_to_play: #Iterate sequences
+                
                     print(f"Sequence {seq}:") #Print sequence name
+                
                     for i, sample_idxs in enumerate(sequences[seq]): #Iterate over the sequence
                 
                         print(f"Step {i+1}: ", end='') #Print current step
@@ -180,11 +195,11 @@ class PlayModes:
                 
                             for sample_idx in sample_idxs: #Play all samples assigned to this step
                 
-                                if sample_idx < len(slots) and slots[sample_idx] is not None:
+                                if sample_idx < len(slots) and slots[sample_idx] is not None: #If sample index valid
                 
-                                    ac.play(slots[sample_idx])
+                                    ac.play(slots[sample_idx]) #Play the sample
                 
-                        else:
+                        else: #Else
                 
                             print("No samples") #Print no samples message
                 
@@ -196,17 +211,27 @@ class PlayModes:
                 seqs_to_play = [] #List of sequences
 
                 if len(parts) == 1: #If no args
+                
                     seqs_to_play = [current_seq] #Loop current
+                
                 else: #If args
+                
                     for s in parts[1:]: #Iterate args
+                
                         s_upper = s.upper() #Upper case
+                
                         if s_upper in sequences: #If exists
+                
                             seqs_to_play.append(s_upper) #Add to list
+                
                         else: #If not exists
+                
                             print(f"Sequence '{s}' not found. Skipping.") #Print skip
                 
                 if not seqs_to_play: #If empty
+                
                     print("No valid sequences to loop.") #Print error
+                
                     continue #Continue loop
 
                 print(f"Looping sequences {seqs_to_play} at {tempo} BPM...") #Play message
@@ -231,16 +256,17 @@ class PlayModes:
                 
                                     for sample_idx in sample_idxs: #Play all samples assigned to this step
                 
-                                        if sample_idx < len(slots) and slots[sample_idx] is not None:
+                                        if sample_idx < len(slots) and slots[sample_idx] is not None: #If sample index valid
                 
-                                            ac.play(slots[sample_idx])
-                                else:
+                                            ac.play(slots[sample_idx]) #Play the sample
+                                else: #Else
                 
                                     print("No samples") #Print no samples message
                 
                                 sleep(step_duration) #Wait for the duration of the step
                 
                 except KeyboardInterrupt: #Catch Ctrl+C to exit loop
+                    
                     print("\nStopped looping playback.") #Stop message
 
             elif cmd == 'show': #If command is 'show'
@@ -249,8 +275,7 @@ class PlayModes:
                 
                     if sample_idxs:
                 
-                        sample_names = [slots[idx] if idx < len(slots) else "None" for idx in sample_idxs]
-                        print(f"Step {i+1}: {sample_names}") #Print step and sample names
+                        print(f"Step {i+1}: {sample_idxs}") #Print step and sample numbers
                 
                     else:
                 
@@ -300,7 +325,79 @@ class PlayModes:
                     current_seq = seq_name #Set current sequence
                 
                 except Exception: #Catch exception
+                    
                     print("Format: seq Name") #Invalid format message
+
+            elif cmd.startswith('save'): #If command starts with 'save'
+                
+                try: #Try block to save patterns
+                    
+                    root = tk.Tk() #Create a Tk object
+                    root.withdraw() #Hide main dialog
+
+                    filename = filedialog.asksaveasfilename( #Open file dialog to chose name to save
+                        title="Save Patterns", #Title from Tk form
+                        defaultextension=".json", #Extension from archive
+                        filetypes=[("JSON files", "*.json"), ("All files", "*.*")] #File type search
+                    )
+
+                    root.destroy() #Clean up Tk instance
+
+                    if filename: #Verify filename
+                        
+                        data = {
+                            "tempo": tempo,
+                            "sequences": sequences
+                        }
+                        
+                        with open(filename, 'w') as f: #Open file
+                            json.dump(data, f, indent=4) #Dump json
+                            
+                        print(f"Patterns saved successfully to {filename}") #Success message
+                    
+                    else:
+                        print("Save cancelled.")
+                    
+                except Exception as e: #Catch errors
+                    
+                    print(f"Error saving patterns: {e}") #Error message
+
+            elif cmd.startswith('load'): #If command starts with 'load'
+                
+                try: #Try block to load patterns
+                    
+                    root = tk.Tk() #Create a Tk object
+                    root.withdraw() #Hide main dialog
+
+                    filename = filedialog.askopenfilename( #Open file dialog to chose file
+                        title="Load Patterns", #Title from Tk form
+                        filetypes=[("JSON files", "*.json"), ("All files", "*.*")] #File type search
+                    )
+
+                    root.destroy() #Clean up Tk instance
+
+                    if filename: #Verify filename
+                        
+                        with open(filename, 'r') as f: #Open file
+                            data = json.load(f) #Load json
+                            
+                        if "tempo" in data: #Check tempo
+                            tempo = data["tempo"] #Load tempo
+                            
+                        if "sequences" in data: #Check sequences
+                            sequences = data["sequences"] #Load sequences
+                        
+                            if current_seq not in sequences: #Check if current seq exists
+                                current_seq = list(sequences.keys())[0] #Set to first available
+                                
+                        print(f"Patterns loaded successfully from {filename}") #Success message
+                    
+                    else:
+                        print("Load cancelled.")
+                    
+                except Exception as e: #Catch errors
+                    
+                    print(f"Error loading patterns: {e}") #Error message
 
             else: #else
                 
@@ -308,7 +405,7 @@ class PlayModes:
                 
                 try: #Try block to assign samples to step
                 
-                    parts = cmd.split() 
+                    parts = cmd.split() #Split command
                     step = int(parts[0]) - 1 #Convert step to integer and adjust for 0-based index
                     sample_idxs = [int(idx) for idx in parts[1:]] #Convert all sample indices to integers
                 

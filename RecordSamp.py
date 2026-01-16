@@ -14,7 +14,7 @@ Created by:
 elcalak gh: https://github.com/elcalak 
 
 Suggest:
-Compile in environment (in Arch): Environment/piplibs/bin/python
+Compile in environment: Use Environment.sh to install all dependencies
 
 """
 

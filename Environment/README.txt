@@ -1,11 +1,9 @@
 Hi im Calak this folder should be contain the enviroment
 
-you can create the environment whit:
+you can create it whit:
 
-python -m Environment Envionment
+bash Envionment.sh
 
-now use source Environment/bin/activate
-
-and finish unsing pip install -r Requirements.txt
+That script have all commands to create the Envionment
 
 Thank you for download!
