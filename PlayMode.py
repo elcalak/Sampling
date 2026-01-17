@@ -23,13 +23,11 @@ import os #Import os library
 from time import sleep #From module time import sleep function
 import AudioBank as ab #Call the module from Control audio banks
 import AudioControls as ac #Call the module from Control audio
+import StepSeqControls as StepSC #Call the module to control Step Sequencer
 import RecordSamp as rs #Call the module from Record Samples
 import sys #Call sys module 
 import termios #Call termios module
 import tty #Call tty module
-import json #Call json module
-import tkinter as tk #Call tkinter module
-from tkinter import filedialog #Call filedialog module
 
 class PlayModes:
 
@@ -128,6 +126,9 @@ class PlayModes:
         current_seq = 'A' #Sequence currently being edited
         sequences[current_seq] = [[] for _ in range(num_steps)] #Start with A empty sequence
         tempo = 120  # Default tempo in BPM
+        last_chain = [] # Variable to store the last played chain
+
+        StepControl = StepSC.StepSeqControls() #Create StepSeqControls instance
 
         sleep(1) #Sleep 1 seconds
 
@@ -135,7 +136,7 @@ class PlayModes:
         
         print("\tStep Sequencer Mode") #Title message
         print("Assign samples to steps (1-16).") #Instructions assign samples
-        print("Type 'play [seqs]' to play sequences, 'loop [seqs]' to loop [seqs], 'show' to display, 'clear' to reset, 'tempo [tempo]' to change tempo\n'seq [seq]' to change or create a sequence, 'save [name]' to save patterns, 'load [name]' to load patterns, 'q' to quit.") #Command instructions
+        print("Type 'play [seqs]' to play sequences, 'loop [seqs]' to loop [seqs], 'show' to display, 'clear' to reset, 'tempo [tempo]' to change tempo\n'seq [seq]' to change or create a sequence, 'save [name]' to save patterns, 'load [name]' to load patterns, 'export [seqs]' to export wav, 'q' to quit.") #Command instructions
         print("To assign multiple samples to a step: step# sample# sample# ... (e.g., 1 2 3 4)") #Assign multiple samples instruction
         print("Example to change or create a sequence: seq B") #To change sequence example
         
@@ -177,6 +178,7 @@ class PlayModes:
                 
                     continue #Continue loop
 
+                last_chain = seqs_to_play # Update last chain
                 print(f"Playing sequences {seqs_to_play} at {tempo} BPM...") #Play message
                 beat_duration = 60 / tempo  # seconds per beat
                 step_duration = beat_duration / 4  # 16th note = quarter note / 4
@@ -234,6 +236,7 @@ class PlayModes:
                 
                     continue #Continue loop
 
+                last_chain = seqs_to_play # Update last chain
                 print(f"Looping sequences {seqs_to_play} at {tempo} BPM...") #Play message
                 print("Press Ctrl+C to stop looping.") #Loop info message
                 
@@ -269,135 +272,34 @@ class PlayModes:
                     
                     print("\nStopped looping playback.") #Stop message
 
-            elif cmd == 'show': #If command is 'show'
-                
-                for i, sample_idxs in enumerate(sequences[current_seq]): #Iterate over the sequence
-                
-                    if sample_idxs:
-                
-                        print(f"Step {i+1}: {sample_idxs}") #Print step and sample numbers
-                
-                    else:
-                
-                        print(f"Step {i+1}: None") #Print step and None
-
             elif cmd == 'clear': #If command is 'clear'
                 
                 sequences[current_seq] = [[] for _ in range(num_steps)] #Reset the sequence to empty lists
                 print(f"Sequence '{current_seq}' cleared.") #Clear message
 
+            elif cmd == 'show': #If command is 'show'
+
+                StepControl.show(sequences, current_seq)    
+
             elif cmd.startswith('tempo'): #If command start with 'tempo'
                 
-                try: #Try block to change tempo
-                
-                    _, new_tempo = cmd.split() #Split command to get new tempo
-                    new_tempo = int(new_tempo) #Convert new tempo to integer
-                
-                    if new_tempo > 0: #If new tempo is positive
-                
-                        tempo = new_tempo #Set the new tempo
-                        print(f"Tempo set to {tempo} BPM.") #Set tempo message
-                
-                    else: #Else
-                
-                        print("Tempo must be positive.") #Invalid tempo message
-                
-                except Exception: #Except block for invalid tempo command
-                
-                    print("Invalid command format. Use: tempo BPM") #Invalid command message
+                tempo = StepControl.tempo(cmd) #Call tempo function from StepSeqControls module
 
             elif cmd.startswith('seq'): #If command is 'seq'
                 
-                try: #Try block to change or create sequence
-                
-                    _, seq_name = cmd.split() #Get sequence name
-                    seq_name = seq_name.upper() #Convert to uppercase
-                
-                    if seq_name not in sequences: #If sequence not exists
-                
-                        sequences[seq_name] = [[] for _ in range(num_steps)] #Create new sequence
-                        print(f"Seq '{seq_name}' Created y selected.") #Created message
-                
-                    else: #Else
-                
-                        print(f"Seq '{seq_name}' Selected.") #Selected message
-                
-                    current_seq = seq_name #Set current sequence
-                
-                except Exception: #Catch exception
-                    
-                    print("Format: seq Name") #Invalid format message
+                sequences, current_seq = StepControl.Seq(cmd, sequences, current_seq, num_steps) #Call Seq function from StepSeqControls module
 
             elif cmd.startswith('save'): #If command starts with 'save'
                 
-                try: #Try block to save patterns
-                    
-                    root = tk.Tk() #Create a Tk object
-                    root.withdraw() #Hide main dialog
-
-                    filename = filedialog.asksaveasfilename( #Open file dialog to chose name to save
-                        title="Save Patterns", #Title from Tk form
-                        defaultextension=".json", #Extension from archive
-                        filetypes=[("JSON files", "*.json"), ("All files", "*.*")] #File type search
-                    )
-
-                    root.destroy() #Clean up Tk instance
-
-                    if filename: #Verify filename
-                        
-                        data = {
-                            "tempo": tempo,
-                            "sequences": sequences
-                        }
-                        
-                        with open(filename, 'w') as f: #Open file
-                            json.dump(data, f, indent=4) #Dump json
-                            
-                        print(f"Patterns saved successfully to {filename}") #Success message
-                    
-                    else:
-                        print("Save cancelled.")
-                    
-                except Exception as e: #Catch errors
-                    
-                    print(f"Error saving patterns: {e}") #Error message
+                StepControl.Save(tempo, sequences, last_chain) #Call Save function from StepSeqControls module
 
             elif cmd.startswith('load'): #If command starts with 'load'
                 
-                try: #Try block to load patterns
-                    
-                    root = tk.Tk() #Create a Tk object
-                    root.withdraw() #Hide main dialog
+                tempo, sequences, last_chain = StepControl.Load() #Call Load function from StepSeqControls module
 
-                    filename = filedialog.askopenfilename( #Open file dialog to chose file
-                        title="Load Patterns", #Title from Tk form
-                        filetypes=[("JSON files", "*.json"), ("All files", "*.*")] #File type search
-                    )
-
-                    root.destroy() #Clean up Tk instance
-
-                    if filename: #Verify filename
-                        
-                        with open(filename, 'r') as f: #Open file
-                            data = json.load(f) #Load json
-                            
-                        if "tempo" in data: #Check tempo
-                            tempo = data["tempo"] #Load tempo
-                            
-                        if "sequences" in data: #Check sequences
-                            sequences = data["sequences"] #Load sequences
-                        
-                            if current_seq not in sequences: #Check if current seq exists
-                                current_seq = list(sequences.keys())[0] #Set to first available
-                                
-                        print(f"Patterns loaded successfully from {filename}") #Success message
-                    
-                    else:
-                        print("Load cancelled.")
-                    
-                except Exception as e: #Catch errors
-                    
-                    print(f"Error loading patterns: {e}") #Error message
+            elif cmd.startswith('export'): #If command starts with 'export'
+                
+                StepControl.export(cmd, sequences, current_seq, tempo, sound, last_chain) #Call export function
 
             else: #else
                 

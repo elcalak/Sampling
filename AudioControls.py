@@ -20,6 +20,9 @@ Compile in environment: Use Environment.sh to install all dependencies
 
 import pygame as pg #Call the module pygame as pg to playing audio
 from time import sleep #From module time import sleep function
+import numpy as np #Call numpy for audio array manipulation
+from scipy.io import wavfile #Call wavfile to write wav files
+import os #Call os for path checking
 
 def load(file): #Function load files
     
@@ -121,6 +124,103 @@ def play(sample): #Function play
     #Finish Except
 
 #End Function play
+
+def export_wav(filename, chain, sequences, tempo, sound_paths): #Function to export chain to wav
+    
+    print(f"Exporting to {filename}...") #Status message
+    
+    try: #Try block
+        
+        fs = 44100 #Sample rate
+        beat_duration = 60 / tempo #Duration of a beat
+        step_duration = beat_duration / 4 #Duration of a step (16th note)
+        samples_per_step = int(step_duration * fs) #Samples per step
+        
+        loaded_samples = {} #Cache for loaded samples
+        max_sample_len = 0 #Track max length for buffer calculation
+        
+        # Load samples into memory
+        for i, path in sound_paths.items(): #Loop for all samples paths
+        
+            if path and os.path.exists(path): #Check if path exist
+        
+                try: #Try block to read wav file
+        
+                    s_fs, s_data = wavfile.read(path) #Read wav file
+                    
+                    # Normalize to float -1..1
+                    if s_data.dtype == np.int16: #16-bit PCM
+                        
+                        s_data = s_data.astype(np.float32) / 32768.0 #Convert to float
+                    
+                    elif s_data.dtype == np.uint8: #8-bit PCM
+                    
+                        s_data = (s_data.astype(np.float32) - 128) / 128.0 #Convert to float
+                    
+                    # Ensure stereo
+                    if len(s_data.shape) == 1: #Mono to stereo
+                        
+                        s_data = np.column_stack((s_data, s_data)) #Duplicate channel
+                        
+                    loaded_samples[i] = s_data #Store loaded sample
+                    
+                    if len(s_data) > max_sample_len: #Update max length
+                    
+                        max_sample_len = len(s_data) #Update max sample length
+                        
+                except Exception as e: #Catch read errors
+        
+                    print(f"Error reading {path}: {e}") #Error message
+        
+        # Calculate total length
+        total_steps = len(chain) * 16 #Assuming 16 steps per sequence
+        total_len = (total_steps * samples_per_step) + max_sample_len #Total length of output buffer
+        
+        output = np.zeros((total_len, 2), dtype=np.float32) #Create output buffer
+        
+        current_step = 0 #Step counter
+        
+        # Construct the sequence
+        for seq_name in chain: #Loop for all sequences in chain
+            
+            if seq_name in sequences: #Check if sequence exist
+            
+                pattern = sequences[seq_name] #Get pattern
+            
+                for step_samples in pattern: #Loop for all steps in pattern
+            
+                    start_pos = current_step * samples_per_step #Calculate start position
+            
+                    if step_samples: #If there are samples assigned to this step
+            
+                        for slot_idx in step_samples: #Loop for all samples in step
+            
+                            if slot_idx in loaded_samples: #Check if sample is loaded
+            
+                                sample = loaded_samples[slot_idx] #Get sample
+                                end_pos = start_pos + len(sample) #Calculate end position
+            
+                                if end_pos <= total_len: #Check bounds
+            
+                                    output[start_pos:end_pos] += sample #Mix sample
+            
+                    current_step += 1 #Increment step counter
+        
+        # Normalize output to prevent clipping
+        max_val = np.max(np.abs(output)) #Find max value
+        
+        if max_val > 1.0: #If clipping
+        
+            output /= max_val #Normalize output
+            
+        wavfile.write(filename, fs, (output * 32767).astype(np.int16)) #Write file
+        print(f"Export successful: {filename}") #Success message
+        
+    except Exception as e: #Catch all errors
+        
+        print(f"Export failed: {e}") #Error message
+
+#End Function export_wav
 
 def pause(): #Function pause
 

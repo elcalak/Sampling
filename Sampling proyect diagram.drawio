@@ -93,19 +93,19 @@
         <mxCell id="7MXhFkBcEFwlxvTN7Eok-22" value="Chain patterns" style="whiteSpace=wrap;html=1;rounded=1;fillColor=#d5e8d4;strokeColor=#82b366;" parent="1" vertex="1">
           <mxGeometry x="460" y="180" width="120" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="4DbAr49gxLyHuvRzXb10-6" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="7MXhFkBcEFwlxvTN7Eok-24" target="4DbAr49gxLyHuvRzXb10-5">
+        <mxCell id="4DbAr49gxLyHuvRzXb10-6" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="7MXhFkBcEFwlxvTN7Eok-24" target="4DbAr49gxLyHuvRzXb10-5" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="7MXhFkBcEFwlxvTN7Eok-24" value="Save chain patterns" style="whiteSpace=wrap;html=1;rounded=1;fillColor=#fff2cc;strokeColor=#d6b656;" parent="1" vertex="1">
+        <mxCell id="7MXhFkBcEFwlxvTN7Eok-24" value="Save chain patterns" style="whiteSpace=wrap;html=1;rounded=1;fillColor=#d5e8d4;strokeColor=#82b366;" parent="1" vertex="1">
           <mxGeometry x="600" y="180" width="120" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="4DbAr49gxLyHuvRzXb10-2" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="7MXhFkBcEFwlxvTN7Eok-26" target="4DbAr49gxLyHuvRzXb10-1">
+        <mxCell id="4DbAr49gxLyHuvRzXb10-2" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="7MXhFkBcEFwlxvTN7Eok-26" target="4DbAr49gxLyHuvRzXb10-1" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="7MXhFkBcEFwlxvTN7Eok-26" value="Save patterns" style="whiteSpace=wrap;html=1;rounded=1;fillColor=#d5e8d4;strokeColor=#82b366;" parent="1" vertex="1">
           <mxGeometry x="320" y="20" width="120" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="7MXhFkBcEFwlxvTN7Eok-28" value="Export chain patterns as wav" style="whiteSpace=wrap;html=1;rounded=1;fillColor=#fff2cc;strokeColor=#d6b656;" parent="1" vertex="1">
+        <mxCell id="7MXhFkBcEFwlxvTN7Eok-28" value="Export chain patterns as wav" style="whiteSpace=wrap;html=1;rounded=1;fillColor=#d5e8d4;strokeColor=#82b366;" parent="1" vertex="1">
           <mxGeometry x="460" y="100" width="120" height="60" as="geometry" />
         </mxCell>
         <mxCell id="BB6iCmeetnfO1ttbBQS8-2" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="BB6iCmeetnfO1ttbBQS8-1" target="7MXhFkBcEFwlxvTN7Eok-26" edge="1">
@@ -150,10 +150,10 @@
         <mxCell id="zmjARM_VxzozTEQHigDQ-7" value="Export Finger Drum patterns as wav" style="whiteSpace=wrap;html=1;rounded=1;" parent="1" vertex="1">
           <mxGeometry x="600" y="340" width="120" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="4DbAr49gxLyHuvRzXb10-1" value="Load patterns" style="whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;rounded=1;" vertex="1" parent="1">
+        <mxCell id="4DbAr49gxLyHuvRzXb10-1" value="Load patterns" style="whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;rounded=1;" parent="1" vertex="1">
           <mxGeometry x="320" y="-60" width="120" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="4DbAr49gxLyHuvRzXb10-5" value="Load chain patterns" style="whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;rounded=1;" vertex="1" parent="1">
+        <mxCell id="4DbAr49gxLyHuvRzXb10-5" value="Load chain patterns" style="whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;rounded=1;" parent="1" vertex="1">
           <mxGeometry x="740" y="180" width="120" height="60" as="geometry" />
         </mxCell>
       </root>
