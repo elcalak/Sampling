@@ -222,6 +222,89 @@ def export_wav(filename, chain, sequences, tempo, sound_paths): #Function to exp
 
 #End Function export_wav
 
+def export_session_wav(filename, events, sound_paths): #Function to export session to wav
+    
+    print(f"Exporting session to {filename}...") #Status message
+
+    try: #Try block
+        
+        fs = 44100 #Sample rate
+        
+        loaded_samples = {} #Cache for loaded samples
+        max_sample_len = 0 #Track max length
+        
+        # Load samples into memory
+        for i, path in sound_paths.items(): #Loop for all samples paths
+            
+            if path and os.path.exists(path): #Check if path exist
+            
+                try: #Try block to read wav file
+            
+                    s_fs, s_data = wavfile.read(path) #Read wav file
+                    # Normalize to float -1..1
+            
+                    if s_data.dtype == np.int16: #16-bit PCM
+            
+                        s_data = s_data.astype(np.float32) / 32768.0 
+            
+                    elif s_data.dtype == np.uint8: #8-bit PCM
+            
+                        s_data = (s_data.astype(np.float32) - 128) / 128.0 
+                    # Ensure stereo
+            
+                    if len(s_data.shape) == 1: #Mono to stereo
+            
+                        s_data = np.column_stack((s_data, s_data)) 
+            
+                    loaded_samples[i] = s_data #Store loaded sample
+            
+                    if len(s_data) > max_sample_len: #Update max length
+            
+                        max_sample_len = len(s_data) 
+            
+                except Exception as e: #Catch read errors
+            
+                    print(f"Error reading {path}: {e}") 
+        
+        if not events: #If no events
+            
+             print("No events to export.") 
+             return
+
+        # Calculate total length
+        last_event_time = events[-1][0] 
+        total_len = int(last_event_time * fs) + max_sample_len + 44100 # Add 1 sec buffer
+        output = np.zeros((total_len, 2), dtype=np.float32) #Create output buffer
+        
+        for offset, slot_idx in events:
+            
+            if slot_idx in loaded_samples:
+            
+                sample = loaded_samples[slot_idx]
+                start_pos = int(offset * fs)
+                end_pos = start_pos + len(sample)
+            
+                if end_pos <= total_len:
+            
+                    output[start_pos:end_pos] += sample
+        
+        # Normalize output
+        max_val = np.max(np.abs(output)) 
+        
+        if max_val > 1.0: 
+        
+            output /= max_val 
+            
+        wavfile.write(filename, fs, (output * 32767).astype(np.int16)) #Write file
+        
+        print(f"Export successful: {filename}") 
+        
+    except Exception as e: #Catch all errors
+        
+        print(f"Export failed: {e}") 
+
+#End Function export_session_wav
+
 def pause(): #Function pause
 
     #print("Im pause fun!") #Line for work check

@@ -21,6 +21,9 @@ This file needs tk pack for work if you dont have this pack use (in Arch): sudo 
 
 import os #Import os library
 from time import sleep #From module time import sleep function
+import time #Import time module
+import tkinter as tk #Call tkinter module
+from tkinter import filedialog #Call filedialog module
 import AudioBank as ab #Call the module from Control audio banks
 import AudioControls as ac #Call the module from Control audio
 import StepSeqControls as StepSC #Call the module to control Step Sequencer
@@ -74,6 +77,10 @@ class PlayModes:
             print("\tFinger Drumming Mode") #Title message
             print("Press keys (r ,t ,y ,f ,g ,h ,v ,n to play slot 1 to 9 respected) to play samples. Press 'q' to quit and 's' to save bank.") #Instructions message
 
+            is_recording = False #Recording state
+            session_events = [] #List to store session events
+            start_time = 0 #Start time of recording
+
             def getch(): #Function to get a single character from standard input without echoing to the screen
                 
                 fd = sys.stdin.fileno() #Get the file descriptor for standard input
@@ -99,6 +106,36 @@ class PlayModes:
                     print("Exiting Finger Drumming Mode.") #Exit message
                     break #Break the loop
                 
+                if key == 'e':
+
+                    if not is_recording: #If not recording
+                        
+                        is_recording = True #Start recording
+                        start_time = time.time() #Set start time
+                        session_events = [] #Reset events
+                        
+                        print("Recording session started... Press 'e' to stop.") #Start message
+                    
+                    else: #If recording
+                    
+                        is_recording = False #Stop recording
+                        print("Recording session stopped.") #Stop message
+                        
+                        if session_events: #If events recorded
+                    
+                             root = tk.Tk() #Create Tk
+                             root.withdraw() #Hide
+                             filename = filedialog.asksaveasfilename(title="Export Session WAV", defaultextension=".wav", filetypes=[("WAV files", "*.wav")]) #Ask filename
+                             root.destroy() #Destroy Tk
+                             
+                             if filename: #If filename
+                    
+                                 ac.export_session_wav(filename, session_events, sound) #Export
+                    
+                        else:
+                    
+                             print("No events to save.") #No events message
+
                 elif key == 's': #If key is 's'
                 
                     ab.SaveBank()  # Call SaveBank function from AudioBank module
@@ -108,6 +145,12 @@ class PlayModes:
                 
                     sample = key_sample_map[key] #Get the corresponding sample
                     ac.play(sample) #Play the sample using AudioControls module
+                    
+                    if is_recording: #If recording
+                        
+                        idx = KeyMapIndex.index(key) + 1 #Get slot index
+                        offset = time.time() - start_time #Calculate offset
+                        session_events.append((offset, idx)) #Add event
                 
                 else: #Else
                 

@@ -27,7 +27,7 @@ import AudioControls as ac #Call the objects from AudioControl
 
 class AudioBank: #Start class Audio bank
 
-    DEFAULT_BANK_PATH = "/home/elcalak/Repositories/elcalak/Sampling/AudioBanks/Default" #Set default path for default bank
+    DEFAULT_BANK_PATH = "$HOME/Sampling/AudioBanks/Default" #Set default path for default bank
 
     def __init__(self, name="DefaultBank"): #Init contructor to default bank
 

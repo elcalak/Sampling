@@ -16,7 +16,7 @@
         <mxCell id="7MXhFkBcEFwlxvTN7Eok-9" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="7MXhFkBcEFwlxvTN7Eok-2" target="7MXhFkBcEFwlxvTN7Eok-8" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="7MXhFkBcEFwlxvTN7Eok-2" value="Bank of Keys to launch samples" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" parent="1" vertex="1">
+        <mxCell id="7MXhFkBcEFwlxvTN7Eok-2" value="Bank of Keys to launch samples" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" parent="1" vertex="1">
           <mxGeometry x="40" y="260" width="120" height="60" as="geometry" />
         </mxCell>
         <mxCell id="7MXhFkBcEFwlxvTN7Eok-7" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="7MXhFkBcEFwlxvTN7Eok-4" target="7MXhFkBcEFwlxvTN7Eok-6" edge="1">
@@ -120,11 +120,11 @@
         <mxCell id="zmjARM_VxzozTEQHigDQ-8" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="BB6iCmeetnfO1ttbBQS8-3" target="zmjARM_VxzozTEQHigDQ-7" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="BB6iCmeetnfO1ttbBQS8-3" value="Record Finger Drum" style="whiteSpace=wrap;html=1;rounded=1;" parent="1" vertex="1">
+        <mxCell id="BB6iCmeetnfO1ttbBQS8-3" value="Record Finger Drum" style="whiteSpace=wrap;html=1;rounded=1;fillColor=#d5e8d4;strokeColor=#82b366;" parent="1" vertex="1">
           <mxGeometry x="600" y="260" width="120" height="60" as="geometry" />
         </mxCell>
         <mxCell id="BB6iCmeetnfO1ttbBQS8-5" value="How to read" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
-          <mxGeometry x="860" y="360" width="140" height="150" as="geometry" />
+          <mxGeometry x="860" y="360" width="140" height="180" as="geometry" />
         </mxCell>
         <mxCell id="BB6iCmeetnfO1ttbBQS8-6" value="Origin" style="text;strokeColor=#9673a6;fillColor=#e1d5e7;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" parent="BB6iCmeetnfO1ttbBQS8-5" vertex="1">
           <mxGeometry y="30" width="140" height="30" as="geometry" />
@@ -135,19 +135,22 @@
         <mxCell id="BB6iCmeetnfO1ttbBQS8-7" value="WIP" style="text;strokeColor=#d6b656;fillColor=#fff2cc;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" parent="BB6iCmeetnfO1ttbBQS8-5" vertex="1">
           <mxGeometry y="90" width="140" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="BB6iCmeetnfO1ttbBQS8-8" value="Finished" style="text;strokeColor=#82b366;fillColor=#d5e8d4;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" parent="BB6iCmeetnfO1ttbBQS8-5" vertex="1">
+        <mxCell id="eqtCRJP5SATQIz-SzsyA-3" value="Postponed" style="text;strokeColor=#b85450;fillColor=#f8cecc;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="BB6iCmeetnfO1ttbBQS8-5">
           <mxGeometry y="120" width="140" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="BB6iCmeetnfO1ttbBQS8-8" value="Finished" style="text;strokeColor=#82b366;fillColor=#d5e8d4;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" parent="BB6iCmeetnfO1ttbBQS8-5" vertex="1">
+          <mxGeometry y="150" width="140" height="30" as="geometry" />
         </mxCell>
         <mxCell id="zmjARM_VxzozTEQHigDQ-6" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="zmjARM_VxzozTEQHigDQ-3" target="zmjARM_VxzozTEQHigDQ-5" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="zmjARM_VxzozTEQHigDQ-3" value="Edit Finger Drums records" style="whiteSpace=wrap;html=1;rounded=1;" parent="1" vertex="1">
+        <mxCell id="zmjARM_VxzozTEQHigDQ-3" value="Edit Finger Drums records" style="whiteSpace=wrap;html=1;rounded=1;fillColor=#f8cecc;strokeColor=#b85450;" parent="1" vertex="1">
           <mxGeometry x="740" y="260" width="120" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="zmjARM_VxzozTEQHigDQ-5" value="Save Finger Drum patterns" style="whiteSpace=wrap;html=1;rounded=1;" parent="1" vertex="1">
+        <mxCell id="zmjARM_VxzozTEQHigDQ-5" value="Save Finger Drum patterns" style="whiteSpace=wrap;html=1;rounded=1;fillColor=#f8cecc;strokeColor=#b85450;" parent="1" vertex="1">
           <mxGeometry x="880" y="260" width="120" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="zmjARM_VxzozTEQHigDQ-7" value="Export Finger Drum patterns as wav" style="whiteSpace=wrap;html=1;rounded=1;" parent="1" vertex="1">
+        <mxCell id="zmjARM_VxzozTEQHigDQ-7" value="Export Finger Drum patterns as wav" style="whiteSpace=wrap;html=1;rounded=1;fillColor=#d5e8d4;strokeColor=#82b366;" parent="1" vertex="1">
           <mxGeometry x="600" y="340" width="120" height="60" as="geometry" />
         </mxCell>
         <mxCell id="4DbAr49gxLyHuvRzXb10-1" value="Load patterns" style="whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;rounded=1;" parent="1" vertex="1">
