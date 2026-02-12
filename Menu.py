@@ -50,10 +50,13 @@ class Menu: #Start class Menu
             os.system('clear' if os.name == 'posix' else 'cls') #Clear the terminal screen
             print("Sample Menu selected") #Print sample menu selected message
             print("\nSelect an option:") #Print select option message
-            print("1. Record Sample") #Print option 1
-            print("2. Edit Sample") #Print option 2
-            print("3. Delete Sample") #Print option 3
-
+            print("1. Record Mic Sample") #Print option 1
+            print("2. Record Desk Sample") #Print option 2
+            print("0. Back") #Print option 3
+            
+            new_option = int(input("\nEnter option number: ")) #Input new option number
+            self.MenuSample(new_option) #Call MenuSample function with new option parameter
+            
         elif option == 2: #Else if option is 2
             
             os.system('clear' if os.name == 'posix' else 'cls') #Clear the terminal screen
@@ -81,6 +84,44 @@ class Menu: #Start class Menu
             self.MenuControls(new_option) #Call menucontrols function again with new option parameter
 
     #End MenuControls
+
+    def MenuSample(self, option): #Start function menusample with option parameter
+
+        if option == 1: #If option is 1
+            
+            os.system('clear' if os.name == 'posix' else 'cls') #Clear the terminal screen
+            print("Record Mic Sample selected") #Print record sample selected message
+
+            option = int(input("\nSelect time rec: ")) #Input option number
+            rs.RecordSamp.RecMic(duration=option) #Call RecMic function from RecordSamp module with duration parameter
+
+            self.MenuControls(1) #Call menucontrols function with option 1 parameter to show sample menu again
+
+        elif option == 2: #Else if option is 2
+            
+            os.system('clear' if os.name == 'posix' else 'cls') #Clear the terminal screen
+            print("Record Mic Sample selected") #Print record sample selected message
+
+            option = int(input("\nSelect time rec: ")) #Input option number
+            rs.RecordSamp.RecDesk(duration=option) #Call RecMic function from RecordSamp module with duration parameter
+
+            self.MenuControls(1) #Call menucontrols function with option 1 parameter to show sample menu again
+
+        elif option == 0: #Else if option is 3
+            
+            print("Backing...") #Print progress message
+            sleep(1) #Sleep 1 second
+            self.__init__() #Call init constructor to show main menu again
+
+            new_option = int(input("\nEnter option number: ")) #Input new option number
+            self.MenuControls(new_option) #Call menucontrols function with new option parameter
+
+        else: #Else
+            
+            print("Invalid option") #Print invalid option message
+            
+            new_option = int(input("\nEnter option number: ")) #Input new option number
+            self.MenuSample(new_option) #Call menusample function again with new option parameter
 
     def MenuBank(self, option): #Start function menubank with option parameter
         

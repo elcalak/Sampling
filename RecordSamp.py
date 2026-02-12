@@ -25,82 +25,114 @@ from scipy.io.wavfile import write #Call function write from the module scipy
 import os #Call the module os to control path files 
 import datetime #Call the module datetime to control date
 
-def RecMic(duration=5, fs=44100): #Function Record microphone
+class RecordSamp: #Start class RecordSamp
 
-    print(f"Starting record of {duration} seconds...") #Print start record message
+    def RecMic(duration, fs=44100): #Function Record microphone
 
-    try: #Init try
+        print(f"Starting record of {duration} seconds...") #Print start record message
+
+        try: #Init try
     
-        recording = sd.rec(int(duration * fs), samplerate=fs, channels=2, dtype='int16') #Rec microphone on stereo
-        sd.wait()  #Wait to rec finish
+            recording = sd.rec(int(duration * fs), samplerate=fs, channels=2, dtype='int16') #Rec microphone on stereo
+            sd.wait()  #Wait to rec finish
 
-        output_dir = "Records" #Define the folder save name
+            output_dir = "Records" #Define the folder save name
 
-        if not os.path.exists(output_dir): #Start conditional to create directory
-            os.makedirs(output_dir) #Create directory
+            if not os.path.exists(output_dir): #Start conditional to create directory
+                
+                os.makedirs(output_dir) #Create directory
         
-        timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S") #Generate timestamp
-        filename = f"recording_{timestamp}.wav" #Create unique filename
+            timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S") #Generate timestamp
+            filename = f"recording_{timestamp}.wav" #Create unique filename
 
-        filepath = os.path.join(output_dir, filename) #Define save path and save name
+            filepath = os.path.join(output_dir, filename) #Define save path and save name
         
-        write(filepath, fs, recording)  #Save file
+            write(filepath, fs, recording)  #Save file
 
-        print(f"Rec saved in: {filepath}") #Print finish record message and the file path
+            print(f"Rec saved in: {filepath}") #Print finish record message and the file path
 
-        return filepath #Returns file path
+            return filepath #Returns file path
 
-    #Finish try
+        #Finish try
 
-    except Exception as e: #Init except
+        except Exception as e: #Init except
         
-        print(f"Rec error: {e}") #Print error message
-        print("Your mic works on?.") #Print first suggest
-        print("Verify the sound devices:") #Print second suggest
-        print("python -m sounddevice") #Print verify instructions
+            print(f"Rec error: {e}") #Print error message
+            print("Your mic works on?.") #Print first suggest
+            print("Verify the sound devices:") #Print second suggest
+            print("python -m sounddevice") #Print verify instructions
         
-        return None #Returns none
+            return None #Returns none
     
-    #Init except
+        #Finish except
 
-"""
-def RecDesk(duration=5, fs=44100, channel = 2): #Function Record Desktop
+    #Finish function RecMic
 
-    print(f"Starting record of {duration} seconds...") #Print start record message
+#Finish class RecordSamp
 
-    try: #Init try
+    def RecDesk(duration, fs=44100, channel = 2): #Function Record Desktop
+
+        print(f"Starting record of {duration} seconds...") #Print start record message
+
+        try: #Init try
     
-        recording = sd.rec(int(duration * fs), samplerate=fs, channels=channel, dtype='int16', device='Bocina Selfie-82') #Rec desktop on stereo
-        sd.wait()  #Wait to rec finish
+            devices = sd.query_devices() #Get all devices
+            input_devices = [] #List to save input devices
+            print("\nAvailable Input Devices:") #Print title
 
-        output_dir = "Record desktop" #Define the folder save name
+            for i, dev in enumerate(devices): #Iterate devices
+                if dev['max_input_channels'] > 0: #Check if input
+                    input_devices.append(i) #Add index to list
+                    print(f"{len(input_devices)}. {dev['name']}") #Print device
 
-        if not os.path.exists(output_dir): #Start conditional to create directory
-            os.makedirs(output_dir) #Create directory
+            selection = int(input("\nSelect device number: ")) #Ask for selection
+            
+            if selection < 1 or selection > len(input_devices): #Validate selection
+                print("Invalid selection.")
+                return None
+
+            device_index = input_devices[selection - 1] #Get real index
+            
+            # Check device capabilities to avoid channel errors
+            dev_info = sd.query_devices(device_index)
+            rec_channels = int(min(channel, dev_info['max_input_channels']))
+            
+            print(f"Recording from: {dev_info['name']} ({rec_channels} ch)")
+            recording = sd.rec(int(duration * fs), samplerate=fs, channels=rec_channels, dtype='int16', device=device_index) #Rec desktop
+            sd.wait()  #Wait to rec finish
+
+            if np.all(recording == 0):
+                print("Warning: Recording is silent. If on Linux, open 'pavucontrol' -> Recording tab to check the source.")
+
+            output_dir = "Record desktop" #Define the folder save name
+
+            if not os.path.exists(output_dir): #Start conditional to create directory
+                os.makedirs(output_dir) #Create directory
         
-        timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S") #Generate timestamp
-        filename = f"recording_{timestamp}.wav" #Create unique filename
+            timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S") #Generate timestamp
+            filename = f"recording_{timestamp}.wav" #Create unique filename
 
-        filepath = os.path.join(output_dir, filename) #Define save path and save name
+            filepath = os.path.join(output_dir, filename) #Define save path and save name
         
-        write(filepath, fs, recording)  #Save file
+            write(filepath, fs, recording)  #Save file
 
-        print(f"Rec saved in: {filepath}") #Print finish record message and the file path
+            print(f"Rec saved in: {filepath}") #Print finish record message and the file path
 
-        return filepath #Returns file path
+            return filepath #Returns file path
 
-    #Finish try
+        #Finish try
 
-    except Exception as e: #Init except
+        except Exception as e: #Init except
         
-        print(f"Rec error: {e}") #Print error message
-        print("Your devices is correctly?.") #Print first suggest
-        print("Verify the sound devices:") #Print second suggest
-        print("python -m sounddevice") #Print verify instructions
+            print(f"Rec error: {e}") #Print error message
+            print("Your devices is correctly?.") #Print first suggest
+            print("Verify the sound devices:") #Print second suggest
+            print("python -m sounddevice") #Print verify instructions
         
-        return None #Returns none
+            return None #Returns none
     
-    #Init except
-"""
+        #Finish except
+
+    #Finish function RecDesk
 
 #RecMic()
