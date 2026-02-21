@@ -72,37 +72,41 @@ class RecordSamp: #Start class RecordSamp
 
     def RecDesk(duration, fs=44100, channel = 2): #Function Record Desktop
 
-        print(f"Starting record of {duration} seconds...") #Print start record message
-
         try: #Init try
     
             devices = sd.query_devices() #Get all devices
             input_devices = [] #List to save input devices
             print("\nAvailable Input Devices:") #Print title
+            print("0. Default Device") #Print default option
 
             for i, dev in enumerate(devices): #Iterate devices
                 if dev['max_input_channels'] > 0: #Check if input
                     input_devices.append(i) #Add index to list
-                    print(f"{len(input_devices)}. {dev['name']}") #Print device
+                    hostapi = sd.query_hostapis(dev['hostapi'])['name'] #Get host api name
+                    print(f"{len(input_devices)}. {dev['name']} ({hostapi})") #Print device
 
             selection = int(input("\nSelect device number: ")) #Ask for selection
             
-            if selection < 1 or selection > len(input_devices): #Validate selection
+            if selection == 0: #If default device
+                device_index = None
+                dev_info = sd.query_devices(kind='input')
+            elif selection > 0 and selection <= len(input_devices): #Validate selection
+                device_index = input_devices[selection - 1] #Get real index
+                dev_info = sd.query_devices(device_index)
+            else:
                 print("Invalid selection.")
                 return None
 
-            device_index = input_devices[selection - 1] #Get real index
-            
             # Check device capabilities to avoid channel errors
-            dev_info = sd.query_devices(device_index)
             rec_channels = int(min(channel, dev_info['max_input_channels']))
             
+            print(f"Starting record of {duration} seconds...") #Print start record message
             print(f"Recording from: {dev_info['name']} ({rec_channels} ch)")
             recording = sd.rec(int(duration * fs), samplerate=fs, channels=rec_channels, dtype='int16', device=device_index) #Rec desktop
             sd.wait()  #Wait to rec finish
 
             if np.all(recording == 0):
-                print("Warning: Recording is silent. If on Linux, open 'pavucontrol' -> Recording tab to check the source.")
+                print("Warning: Recording is silent.\n- If on Linux: Open 'pavucontrol', go to 'Recording' tab, and change the source of this application to 'Monitor of...'.\n- If on Windows: Ensure 'Stereo Mix' is enabled and selected.")
 
             output_dir = "Record desktop" #Define the folder save name
 

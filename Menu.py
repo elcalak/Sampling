@@ -24,6 +24,7 @@ from time import sleep #From module time import sleep function
 import AudioBank as ab #Call the module from Control audio banks
 import RecordSamp as rs #Call the module from Record Samples
 import PlayMode as pm #Call the module from Play Modes
+import EditSamp as es #Call the module from Edit Samples
 
 class Menu: #Start class Menu
 
@@ -52,6 +53,8 @@ class Menu: #Start class Menu
             print("\nSelect an option:") #Print select option message
             print("1. Record Mic Sample") #Print option 1
             print("2. Record Desk Sample") #Print option 2
+            print("3. Easy Chop") #Print option 3
+            print("4. Audio effects to sample")
             print("0. Back") #Print option 3
             
             new_option = int(input("\nEnter option number: ")) #Input new option number
@@ -100,14 +103,41 @@ class Menu: #Start class Menu
         elif option == 2: #Else if option is 2
             
             os.system('clear' if os.name == 'posix' else 'cls') #Clear the terminal screen
-            print("Record Mic Sample selected") #Print record sample selected message
+            print("Record Desktop Sample selected") #Print record sample selected message
 
-            option = int(input("\nSelect time rec: ")) #Input option number
-            rs.RecordSamp.RecDesk(duration=option) #Call RecMic function from RecordSamp module with duration parameter
+            print("WIP Coming soon...") #Print coming soon message
+            sleep(3) #Sleep 3 seconds
+
+            #option = int(input("\nSelect time rec: ")) #Input option number
+            #rs.RecordSamp.RecDesk(duration=option) #Call RecMic function from RecordSamp module with duration parameter
 
             self.MenuControls(1) #Call menucontrols function with option 1 parameter to show sample menu again
+        
+        elif option == 3: #Else if option is 3
+            
+            EditSample = es.EditSamp() #Create object EditSample from EditSamp module
 
-        elif option == 0: #Else if option is 3
+            os.system('clear' if os.name == 'posix' else 'cls') #Clear the terminal screen
+            print("Chop Sample selected") #Print chop sample selected messages
+            
+            option = int(input("\nSelect number of slices: ")) #Input option number
+            EditSample.EzChop(num_slices=option) #Call Chop function from Record
+            self.MenuControls(1) #Call menucontrols function with option 1 parameter to show sample menu again
+
+        elif option == 4: #Else if option is 4
+
+            os.system('clear' if os.name == 'posix' else 'cls') #Clear the terminal screen
+            print("Audio effects to sample Menu") #Print audio effects to sample selected message
+            print("\nSelect an option:") #Print select option message
+            print("1. Pass Filter") #Print option 1
+            print("2. Pitch Control") #Print option 2
+            print("0. Back") #Print option 3
+
+            option = int(input("\nEnter option number: ")) #Input option number
+            self.EffectsSubMenu(option) #Call EffectsSubMenu function with option parameter
+            self.MenuSample(4) #Call MenuSample function with option 4 parameter to show audio effects to sample menu again
+
+        elif option == 0: #Else if option is 0
             
             print("Backing...") #Print progress message
             sleep(1) #Sleep 1 second
@@ -122,6 +152,38 @@ class Menu: #Start class Menu
             
             new_option = int(input("\nEnter option number: ")) #Input new option number
             self.MenuSample(new_option) #Call menusample function again with new option parameter
+
+    def EffectsSubMenu(self, option): #Start function effectsubmenu with option parameter
+
+        if option == 1: #If option is 1
+
+            EditSample = es.EditSamp() #Create object EditSample from EditSamp module
+
+            os.system('clear' if os.name == 'posix' else 'cls') #Clear the terminal screen
+            print("Filter Sample selected") #Print filter sample selected message
+            EditSample.Catch(True) #Call Catch function from EditSamp object with True parameter to indicate it was called from the main menu
+
+            self.MenuSample(4) #Call menucontrols function with option 1 parameter to show sample menu again
+
+        elif option == 2: #if option is 2
+
+            print("Pitch Control selected") #Print pitch control selected message
+            sleep(1) #Sleep 1 second
+            self.MenuSample(4) #Call menucontrols function with option 1 parameter to show sample menu again
+        
+        elif option == 0: #Else if option is 0
+            
+            print("Backing...") #Print progress message
+            sleep(1) #Sleep 1 second
+            self.MenuControls(1) #Call menucontrols function with option 1 parameter to show sample menu again
+
+        else: #Else
+            
+            print("Invalid option") #Print invalid option message
+            new_option = int(input("\nEnter option number: ")) #Input new option number
+            self.EffectsSubMenu(new_option) #Call EffectsSubMenu function again with new option
+
+    #End EffectsSubMenu
 
     def MenuBank(self, option): #Start function menubank with option parameter
         
@@ -154,7 +216,7 @@ class Menu: #Start class Menu
             option = int(input("\nEnter option number: ")) #Input option number
             self.PlayMenu(option, sound) #Call PlayMenu function with option parameter
 
-        elif option == 0: #Else if option is 3
+        elif option == 0: #Else if option is 0
         
             print("Backing...") #Print progress message
             sleep(1) #Sleep 1 second
