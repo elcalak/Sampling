@@ -18,7 +18,6 @@ Compile in environment: Use Environment.sh to install all dependencies
 This file needs tk pack for work if you dont have this pack use (in Arch): sudo pacman -S tk
 """
 
-import pygame as pg #Call the module pygame as pg to playing audio
 from time import sleep #From module time import sleep function
 import os #Call os module
 import numpy as np #Call numpy
@@ -27,7 +26,6 @@ from scipy import signal #Call signal from scipy
 import AudioControls as ac #Call the module AudioControls as ac to control the audio
 import tkinter as tk #Call tkinter
 from tkinter import filedialog #Call filedialog
-
 
 class EditSamp:
 
@@ -108,8 +106,8 @@ class EditSamp:
             self.FilterPass(sample_path) #Call the FilterPass function to apply a filter to the selected sample
         
         else: #Else if launch is False, it means the function was called from the filter menu
-            print("WIP")
-            #self.PitchControl(sample_path) #Call the PitchControl function to apply pitch control to the selected sample
+        
+            self.PitchControl(sample_path) #Call the PitchControl function to apply pitch control to the selected sample
 
     def FilterPass(self,sample_path): #Function to apply a filter to a sample
                 
@@ -181,13 +179,17 @@ class EditSamp:
             option = input("Do you want to save the filtered sample? (y/n): ").strip().lower() #Input option to save the filtered sample and convert to lowercase
 
             if option == 'y': #If the user does want to save the filtered sample            
-            
+                
+                ac.stop(PlaySample) 
+
                 print(f"Filtered sample saved: {output_path}") #Print message confirming the filtered sample has been saved with its path
-            
+                
                 return output_path #Return the path of the filtered sample
 
             elif option == 'n': #Else if the user does not want to save the filtered sample
                 
+                ac.stop(PlaySample) #Stop the audio playback using the stop function from AudioControls
+
                 try:
                     
                     os.remove(output_path)
@@ -201,6 +203,7 @@ class EditSamp:
                 new_option = input("Do you want try with other parammters? (y/n): ").strip().lower() #Input option to apply another filter and convert to lowercase
 
                 if new_option == 'y': #If the user does want to apply another filter
+                    
                     self.FilterPass(sample_path) #Call the FilterPass function again to apply another filter
 
                 elif new_option == 'n': #Else if the user does not want to apply another filter
@@ -225,5 +228,92 @@ class EditSamp:
             return None #Return None if there was an error
 
     #End of FilterPass function
+
+    def PitchControl(self, sample_path): #Function to apply pitch control to a sample
+        
+        semitones = float(input("Enter number of semitones to shift (positive(+) for up, negative(-) for down): ").strip()) #Input number of semitones to shift and convert to float
+
+        print(f"\tApplying pitch shift of {semitones} semitones to {sample_path}...") #Print message about the pitch shift being applied
+        sleep(1) #Sleep 1 second
+
+        try: #Init try
+            
+            fs, data = wavfile.read(sample_path) #Read wav file
+            
+            factor = 2 ** (semitones / 12) #Calculate the pitch shift factor based on the number of semitones
+            
+            indices = np.round(np.arange(0, len(data), factor)).astype(int) #Calculate new indices for the audio data based on the pitch shift factor
+            indices = indices[indices < len(data)] #Ensure that the new indices do not exceed the length of the original audio data
+            
+            pitched_data = data[indices] #Create the new audio data by selecting samples at the new indices
+            
+            base_name = os.path.splitext(os.path.basename(sample_path))[0] #Get base name of the file without extension
+            output_filename = f"{base_name}_pitch_shift_{int(semitones)}_semitones.wav" #Create filename for the pitch-shifted sample
+            output_path = os.path.join(os.path.dirname(sample_path), output_filename) #Define path for the pitch-shifted sample
+            
+            wavfile.write(output_path, fs, pitched_data.astype(np.int16)) #Save the pitch-shifted data as a new wav file
+            
+            sample = [" "] * 10 #Create a list with the path of the filtered sample to load it with AudioControls
+            sample[1] = output_path #Set the first element of the list to the path of the filtered sample
+
+            PlaySample_Tuple = ac.load(sample) #Load the filtered audio using the load function from AudioControls
+            PlaySample_List = PlaySample_Tuple[0] #Became the tuple to a list
+            PlaySample = PlaySample_List[1] #Get the first element of the list, which is the pitchet audio data to be played
+
+            print("Filter applied successfully. Playing Pitched audio...") #Print message confirming the pitch was applied and the audio is playing
+            ac.play(PlaySample) #Play the filtered audio using the play function from AudioControls
+
+            option = input("Do you want to save the filtered sample? (y/n): ").strip().lower() #Input option to save the filtered sample and convert to lowercase
+
+            if option == 'y': #If the user does want to save the filtered sample            
+                
+                ac.stop(PlaySample) #Stop the audio playback using the stop function from AudioControls
+
+                print(f"Pitched sample saved: {output_path}") #Print message confirming the filtered sample has been saved with its path
+            
+                return output_path #Return the path of the filtered sample
+
+            elif option == 'n': #Else if the user does not want to save the filtered sample
+                
+                ac.stop(PlaySample) #Stop the audio playback using the stop function from AudioControls
+
+                try:
+                    
+                    os.remove(output_path)
+                
+                except OSError as e:
+                
+                    print(f"Error deleting temporary file: {e}")
+
+                print("Filtered sample not saved.") #Print message confirming the filtered sample was not saved
+                
+                new_option = input("Do you want try with other parammters? (y/n): ").strip().lower() #Input option to apply another filter and convert to lowercase
+
+                if new_option == 'y': #If the user does want to apply another filter
+                    
+                    self.PitchControl(sample_path) #Call the PitchControl function again to apply another filter
+
+                elif new_option == 'n': #Else if the user does not want to apply another filter
+                    
+                    print("Exiting filter mode.") #Print message confirming exit from filter mode
+                    sleep(1) #Sleep 1 second
+
+                    return None #Return None to exit the function
+                
+                else: #Else if the input is not recognized
+                    
+                    print("Invalid option. Exiting filter mode.") #Print invalid option message
+                    sleep(1) #Sleep 1 second
+
+                    return None #Return None to exit the function
+            
+            return output_path #Return the path of the pitch-shifted sample
+
+        except Exception as e: #Init except
+            
+            print(f"Error applying pitch shift: {e}") #Print error message if there is an issue during the pitch shifting process
+            sleep(1) #Sleep 1 second
+
+            return None #Return None if there was an error
 
 #End of EditSamp class

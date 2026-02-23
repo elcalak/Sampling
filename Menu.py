@@ -167,8 +167,12 @@ class Menu: #Start class Menu
 
         elif option == 2: #if option is 2
 
+            EditSample = es.EditSamp() #Create object EditSample from EditSamp module
+
+            os.system('clear' if os.name == 'posix' else 'cls') #Clear the terminal screen
             print("Pitch Control selected") #Print pitch control selected message
-            sleep(1) #Sleep 1 second
+            EditSample.Catch(False) #Call PitchControl function from EditSamp object with False parameter to indicate it was called from the main menu
+
             self.MenuSample(4) #Call menucontrols function with option 1 parameter to show sample menu again
         
         elif option == 0: #Else if option is 0

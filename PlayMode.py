@@ -27,7 +27,6 @@ from tkinter import filedialog #Call filedialog module
 import AudioBank as ab #Call the module from Control audio banks
 import AudioControls as ac #Call the module from Control audio
 import StepSeqControls as StepSC #Call the module to control Step Sequencer
-import RecordSamp as rs #Call the module from Record Samples
 import sys #Call sys module 
 import termios #Call termios module
 import tty #Call tty module

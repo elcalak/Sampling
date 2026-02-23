@@ -19,7 +19,6 @@ Compile in environment: Use Environment.sh to install all dependencies
 """
 
 import pygame as pg #Call the module pygame as pg to playing audio
-from time import sleep #From module time import sleep function
 import numpy as np #Call numpy for audio array manipulation
 from scipy.io import wavfile #Call wavfile to write wav files
 import os #Call os for path checking
@@ -383,7 +382,7 @@ def resume(): #Function resume
 
 #Finish Function resume
 
-def stop(): #Function stop
+def stop(sample): #Function stop
     
     #print("Im stop fun!") #Line for work check
 
@@ -400,7 +399,7 @@ def stop(): #Function stop
 
         else: #Start condicional for wav format
 
-            sound.stop() #Stop play
+            sample.stop() #Stop play
             #print("Im stopwav fun!") #Line for work check
             return sound, True #Return pygame mixer
         #Finish condicional for wav format
@@ -409,7 +408,7 @@ def stop(): #Function stop
     
     except pg.error as e: #Init except
     
-        print(f"Error to load or play the file: {file}") #Print error message
+        print(f"Error to load or play the file: {sample}") #Print error message
         print(f"Pygame error: {e}") #Print error message
         return None, False #Return none add false
     #Finish Except

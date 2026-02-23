@@ -18,7 +18,6 @@ Compile in environment: Use Environment.sh to install all dependencies
 
 """
 
-from time import sleep #From module time import sleep function
 import sounddevice as sd #Call the module sounddevice as sd for record audio
 import numpy as np #Call numpy for control of audio arrays
 from scipy.io.wavfile import write #Call function write from the module scipy
