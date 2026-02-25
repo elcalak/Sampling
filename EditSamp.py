@@ -31,10 +31,6 @@ class EditSamp:
 
     def EzChop(self, num_slices): #Function to chop sample into slices with a simple interface
         
-        os.system('clear' if os.name == 'posix' else 'cls') #Clear the terminal screen
-
-        print("\tChop Sample Mode") #Print chop sample mode message
-        
         root = tk.Tk() #Create a Tkinter root window
         root.withdraw() #Hide the root window
         sample_path = filedialog.askopenfilename(title="Select Sample to Chop", filetypes=[("WAV files", "*.wav")]) #Open file dialog to select sample to chop
@@ -73,25 +69,25 @@ class EditSamp:
                 wavfile.write(slice_path, fs, slice_data) #Save the slice as a new wav file
                 chopped_paths.append(slice_path) #Add the slice path to the list of chopped paths
                 print(f"Saved slice {i+1}: {slice_path}") #Print message confirming the slice has been saved with its path
-                
+            
+            sleep(2) #Sleep 2 seconds to allow the user to read the messages about the saved slices
+
             return chopped_paths #Return the list of chopped paths
 
         except Exception as e: #Init except
            
             print(f"Error chopping sample: {e}") #Print error message if there is an issue during the chopping process
-            
+            sleep(2) #Sleep 2 seconds to allow the user to read the error message
+
             return [] #Return empty list if there was an error
 
     #End of EzChop function        
     
     def Catch(self, launch):
-        
-        os.system('clear' if os.name == 'posix' else 'cls') #Clear the terminal screen
 
-        print("\tFilter Sample Mode") #Print filter sample mode message
         root = tk.Tk() #Create a Tkinter root window
         root.withdraw() #Hide the root window
-        sample_path = filedialog.askopenfilename(title="Select Sample to Filter", filetypes=[("WAV files", "*.wav")]) #Open file dialog to select sample to filter
+        sample_path = filedialog.askopenfilename(title="Select Sample:", filetypes=[("WAV files", "*.wav")]) #Open file dialog to select sample to filter
         root.destroy() #Destroy the root window after file selection
 
         if not sample_path: #If no file is selected
@@ -152,13 +148,6 @@ class EditSamp:
                 normal_cutoff = cutoff_freq / nyq
                 b, a = signal.butter(5, normal_cutoff, btype='high', analog=False)
                 filtered_data = signal.filtfilt(b, a, data, axis=0)
-           
-            else: #Else if filter type is not recognized
-           
-                print("Invalid filter type. Please choose 'lowpass' or 'highpass'.") #Print invalid filter type message
-                sleep(1) #Sleep 1 second
-                
-                return None #Return None if the filter type is invalid
             
             base_name = os.path.splitext(os.path.basename(sample_path))[0] #Get base name of the file without extension
             output_filename = f"{base_name}_{filter_type}_cutoff_{int(cutoff_freq)}Hz.wav" #Create filename for the filtered sample
@@ -219,7 +208,26 @@ class EditSamp:
                     sleep(1) #Sleep 1 second
 
                     return None #Return None to exit the function
-        
+
+            else: #Else if the input is not recognized
+                
+                ac.stop(PlaySample) #Stop the audio playback using the stop function from AudioControls
+                
+                print("Invalid option. Exiting filter mode without changes.") #Print invalid option message
+                
+                try:
+                    
+                    os.remove(output_path)
+                
+                except OSError as e:
+                
+                    print(f"Error deleting temporary file: {e}")
+                
+                sleep(1) #Sleep 1 second
+
+                return None #Return None to exit the function
+
+
         except Exception as e: #Init except
             
             print(f"Error applying filter: {e}") #Print error message if there is an issue during the filtering process
@@ -306,8 +314,24 @@ class EditSamp:
                     sleep(1) #Sleep 1 second
 
                     return None #Return None to exit the function
-            
-            return output_path #Return the path of the pitch-shifted sample
+
+            else:
+                
+                ac.stop(PlaySample) #Stop the audio playback using the stop function from AudioControls
+                
+                print("Invalid option. Exiting filter mode without changes.") #Print invalid option message
+                
+                try:
+                    
+                    os.remove(output_path)
+                
+                except OSError as e:
+                
+                    print(f"Error deleting temporary file: {e}")
+                
+                sleep(1) #Sleep 1 second
+
+                return None #Return None to exit the functio
 
         except Exception as e: #Init except
             

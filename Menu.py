@@ -25,51 +25,102 @@ import AudioBank as ab #Call the module from Control audio banks
 import RecordSamp as rs #Call the module from Record Samples
 import PlayMode as pm #Call the module from Play Modes
 import EditSamp as es #Call the module from Edit Samples
+from rich.console import Console #Import rich library as r for better terminal output
 
 class Menu: #Start class Menu
 
     def __init__(self): #Init contructor for Menu
-
+        
+        console = Console() #Create console object from rich library
+        
         print("Menu initialized") #Work check
-        
-        sleep(1) #Sleep 1 second
-        os.system('clear' if os.name == 'posix' else 'cls') #Clear the terminal screen
 
-        print("\n\tWelcome to Sampling Proyect") #Welcome message
+        sleep(1) #Sleep 1 second
+        console.clear() #Clear the terminal screen
         
-        print("\nSelect an option:") #Print select option message
-        print("1. Sample Menu") #Print option 1
-        print("2. Audio Bank Menu") #Print option 2
-        print("0. Exit") #Print option 3
+        title = (r"""
+        
+        ███████╗ █████╗ ███╗   ███╗██████╗ ██╗     ██╗███╗   ██╗ ██████╗ 
+        ██╔════╝██╔══██╗████╗ ████║██╔══██╗██║     ██║████╗  ██║██╔════╝ 
+        ███████╗███████║██╔████╔██║██████╔╝██║     ██║██╔██╗ ██║██║  ███╗
+        ╚════██║██╔══██║██║╚██╔╝██║██╔═══╝ ██║     ██║██║╚██╗██║██║   ██║
+        ███████║██║  ██║██║ ╚═╝ ██║██║     ███████╗██║██║ ╚████║╚██████╔╝
+        ╚══════╝╚═╝  ╚═╝╚═╝     ╚═╝╚═╝     ╚══════╝╚═╝╚═╝  ╚═══╝ ╚═════╝ 
+                                                                 
+        """) #Title ascii art
+        
+        console.rule(title = "Welcome to: ", characters = "=") #Print rule with rich library
+        console.print(title, style="bold blue", justify="center") #Print title with rich style
+        console.rule(title = "By: Calak de Astora", characters = "=") #Print rule with rich library
+        #print("\n\tWelcome to Sampling Proyect") #Welcome message
+        
+        console.print("\nSelect an option:", style="bold", justify = "center") #Print select option message
+        console.print("1. Sample Menu", style = "bold magenta", justify = "full") #Print option 1
+        console.print("2. Audio Bank Menu", style = "bold magenta", justify = "full") #Print option 2
+        console.print("0. Exit", style = "bold red", justify = "full") #Print option 3
 
     #End contructor
 
     def MenuControls(self, option): #Start function menucontrols with option parameter
 
+        console = Console() #Create console object from rich library
+
         if option == 1: #If option is 1
-            
-            os.system('clear' if os.name == 'posix' else 'cls') #Clear the terminal screen
+
             print("Sample Menu selected") #Print sample menu selected message
-            print("\nSelect an option:") #Print select option message
-            print("1. Record Mic Sample") #Print option 1
-            print("2. Record Desk Sample") #Print option 2
-            print("3. Easy Chop") #Print option 3
-            print("4. Audio effects to sample")
-            print("0. Back") #Print option 3
+            console.clear() #Clear the terminal screen
+
+            title = (r"""
             
-            new_option = int(input("\nEnter option number: ")) #Input new option number
+███████╗ █████╗ ███╗   ███╗██████╗ ██╗     ███████╗██████╗ 
+██╔════╝██╔══██╗████╗ ████║██╔══██╗██║     ██╔════╝██╔══██╗
+███████╗███████║██╔████╔██║██████╔╝██║     █████╗  ██████╔╝
+╚════██║██╔══██║██║╚██╔╝██║██╔═══╝ ██║     ██╔══╝  ██╔══██╗
+███████║██║  ██║██║ ╚═╝ ██║██║     ███████╗███████╗██║  ██║
+╚══════╝╚═╝  ╚═╝╚═╝     ╚═╝╚═╝     ╚══════╝╚══════╝╚═╝  ╚═╝
+            
+            """) #Title ascii art
+
+            console.rule(title = "You are in: Sampler Menu", characters = "=") #Print rule with rich library
+            console.print(title, style="bold blue", justify="center") #Print title with rich style
+            console.rule(title = "Back to: Main Menu", characters = "=") #Print rule with rich library
+
+            console.print("\nSelect an option:", style="bold", justify = "center") #Print select option message
+            console.print("1. Record Mic Sample", style = "bold purple", justify = "full") #Print option 1
+            console.print("2. Record Desk Sample", style = "bold purple", justify = "full") #Print option 2
+            console.print("3. Easy Chop", style = "bold blue", justify = "full") #Print option 3
+            console.print("4. Audio effects to sample", style = "bold green", justify = "full")
+            console.print("0. Back", style = "bold yellow", justify = "full") #Print option 3
+            
+            new_option = int(console.input("\n[bold]Enter option number:[/bold] ")) #Input new option number
             self.MenuSample(new_option) #Call MenuSample function with new option parameter
             
         elif option == 2: #Else if option is 2
             
-            os.system('clear' if os.name == 'posix' else 'cls') #Clear the terminal screen
             print("AudioBank Menu selected") #Print sample menu selected message
-            print("\nSelect an option:") #Print select option message
-            print("1. Create Bank") #Print option 1
-            print("2. Load Bank") #Print option 2
-            print("0. Back") #Print option 3
+            console.clear() #Clear the terminal screen
+
+            title = (r"""
+
+██████╗  █████╗ ███╗   ██╗██╗  ██╗███████╗
+██╔══██╗██╔══██╗████╗  ██║██║ ██╔╝██╔════╝
+██████╔╝███████║██╔██╗ ██║█████╔╝ ███████╗
+██╔══██╗██╔══██║██║╚██╗██║██╔═██╗ ╚════██║
+██████╔╝██║  ██║██║ ╚████║██║  ██╗███████║
+╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═══╝╚═╝  ╚═╝╚══════╝
+                                          
+            """)
+
+            console.rule(title = "You are in: Banks Menu", characters = "=") #Print rule with rich library
+            console.print(title, style="bold blue", justify="center") #Print title with rich style
+            console.rule(title = "Back to: Main Menu", characters = "=") #Print rule with rich library
+
+            console.print("\nSelect an option:", style="bold", justify = "full") #Print select option message
+            console.print("1. Create Bank", style="bold white", justify = "full") #Print option 1
+            console.print("2. Load Bank", style="bold blue", justify = "full") #Print option 2
+            console.print("0. Back", style="bold yellow", justify = "full") #Print option 3
             
-            new_option = int(input("\nEnter option number: ")) #Input new option number
+            new_option = int(console.input("\n[bold]Enter option number:[/bold] ")) #Input new option number
             self.MenuBank(new_option) #Call MenuBank function with new option parameter
 
         elif option == 0: #Else if option is 0
@@ -83,27 +134,59 @@ class Menu: #Start class Menu
             
             print("Invalid option") #Print invalid option message
             
-            new_option = int(input("\nEnter option number: ")) #Input new option number
+            new_option = int(console.input("\n[bold]Enter option number:[/bold] ")) #Input new option number
             self.MenuControls(new_option) #Call menucontrols function again with new option parameter
 
     #End MenuControls
 
     def MenuSample(self, option): #Start function menusample with option parameter
+        
+        console = Console() #Create console object from rich library
 
         if option == 1: #If option is 1
             
-            os.system('clear' if os.name == 'posix' else 'cls') #Clear the terminal screen
             print("Record Mic Sample selected") #Print record sample selected message
+            console.clear() #Clear the terminal screen
 
-            option = int(input("\nSelect time rec: ")) #Input option number
+            title = (r"""
+            
+██████╗ ███████╗ ██████╗███╗   ███╗██╗ ██████╗██╗
+██╔══██╗██╔════╝██╔════╝████╗ ████║██║██╔════╝██║
+██████╔╝█████╗  ██║     ██╔████╔██║██║██║     ██║
+██╔══██╗██╔══╝  ██║     ██║╚██╔╝██║██║██║     ╚═╝
+██║  ██║███████╗╚██████╗██║ ╚═╝ ██║██║╚██████╗██╗
+╚═╝  ╚═╝╚══════╝ ╚═════╝╚═╝     ╚═╝╚═╝ ╚═════╝╚═╝
+                                                                                             
+            """)
+            
+            console.rule(title = "You are in: RecMic Menu", characters = "=") #Print rule with rich library
+            console.print(title, style="bold blue", justify="center") #Print title with rich style
+            console.rule(title = "Back to: Sampler Menu", characters = "=") #Print rule with rich library
+
+            option = int(console.input("\n[bold]Select time rec: [/bold]")) #Input option number
             rs.RecordSamp.RecMic(duration=option) #Call RecMic function from RecordSamp module with duration parameter
 
             self.MenuControls(1) #Call menucontrols function with option 1 parameter to show sample menu again
 
         elif option == 2: #Else if option is 2
             
-            os.system('clear' if os.name == 'posix' else 'cls') #Clear the terminal screen
             print("Record Desktop Sample selected") #Print record sample selected message
+            console.clear() #Clear the terminal screen
+
+            title = (r"""
+
+██████╗ ███████╗ ██████╗██████╗ ███████╗███████╗██╗  ██╗██╗
+██╔══██╗██╔════╝██╔════╝██╔══██╗██╔════╝██╔════╝██║ ██╔╝██║
+██████╔╝█████╗  ██║     ██║  ██║█████╗  ███████╗█████╔╝ ██║
+██╔══██╗██╔══╝  ██║     ██║  ██║██╔══╝  ╚════██║██╔═██╗ ╚═╝
+██║  ██║███████╗╚██████╗██████╔╝███████╗███████║██║  ██╗██╗
+╚═╝  ╚═╝╚══════╝ ╚═════╝╚═════╝ ╚══════╝╚══════╝╚═╝  ╚═╝╚═╝
+                                                           
+            """)
+
+            console.rule(title = "You are in: RecDesk Menu", characters = "=") #Print rule with rich library
+            console.print(title, style="bold blue", justify="center") #Print title with rich style
+            console.rule(title = "Back to: Sampler Menu", characters = "=") #Print rule with rich library
 
             print("WIP Coming soon...") #Print coming soon message
             sleep(3) #Sleep 3 seconds
@@ -117,30 +200,61 @@ class Menu: #Start class Menu
             
             EditSample = es.EditSamp() #Create object EditSample from EditSamp module
 
-            os.system('clear' if os.name == 'posix' else 'cls') #Clear the terminal screen
             print("Chop Sample selected") #Print chop sample selected messages
+            console.clear() #Clear the terminal screen
+
+            title = (r"""
+                
+███████╗███████╗ ██████╗██╗  ██╗ ██████╗ ██████╗ ██╗
+██╔════╝╚══███╔╝██╔════╝██║  ██║██╔═══██╗██╔══██╗██║
+█████╗    ███╔╝ ██║     ███████║██║   ██║██████╔╝██║
+██╔══╝   ███╔╝  ██║     ██╔══██║██║   ██║██╔═══╝ ╚═╝
+███████╗███████╗╚██████╗██║  ██║╚██████╔╝██║     ██╗
+╚══════╝╚══════╝ ╚═════╝╚═╝  ╚═╝ ╚═════╝ ╚═╝     ╚═╝ 
+                                                                  
+            """)
             
-            option = int(input("\nSelect number of slices: ")) #Input option number
+            console.rule(title = "You are in: EasyChop Menu", characters = "=") #Print rule with rich library
+            console.print(title, style = "bold blue", justify = "center") #Print title with rich style
+            console.rule(title = "Back to: Sampler Menu", characters = "=") #Print rule with rich library
+            
+            option = int(console.input("\n[bold]Select number of slices: [/bold]")) #Input option number
             EditSample.EzChop(num_slices=option) #Call Chop function from Record
             self.MenuControls(1) #Call menucontrols function with option 1 parameter to show sample menu again
 
         elif option == 4: #Else if option is 4
 
-            os.system('clear' if os.name == 'posix' else 'cls') #Clear the terminal screen
             print("Audio effects to sample Menu") #Print audio effects to sample selected message
-            print("\nSelect an option:") #Print select option message
-            print("1. Pass Filter") #Print option 1
-            print("2. Pitch Control") #Print option 2
-            print("0. Back") #Print option 3
+            console.clear() #Clear the terminal screen
 
-            option = int(input("\nEnter option number: ")) #Input option number
+            title = (r"""
+                     
+███████╗███████╗███████╗███████╗ ██████╗████████╗███████╗
+██╔════╝██╔════╝██╔════╝██╔════╝██╔════╝╚══██╔══╝██╔════╝
+█████╗  █████╗  █████╗  █████╗  ██║        ██║   ███████╗
+██╔══╝  ██╔══╝  ██╔══╝  ██╔══╝  ██║        ██║   ╚════██║
+███████╗██║     ██║     ███████╗╚██████╗   ██║   ███████║
+╚══════╝╚═╝     ╚═╝     ╚══════╝ ╚═════╝   ╚═╝   ╚══════╝
+                                                        
+            """)
+            
+            console.rule(title = "You are in: Effects SubMenu", characters = "=") #Print rule with rich library
+            console.print(title, style = "bold blue", justify = "center") #Print title with rich style
+            console.rule(title = "Back to: Sampler Menu", characters = "=") #Print rule with rich library
+
+            console.print("\nSelect an option:", style="bold", justify = "center") #Print select option message
+            console.print("1. Pass Filter", style="bold black", justify = "full") #Print option 1
+            console.print("2. Pitch Control", style="bold green", justify = "full") #Print option 2
+            console.print("0. Back", style="bold yellow", justify = "full") #Print option 3
+
+            option = int(console.input("\n[bold]Enter option number: [/bold]")) #Input option number
             self.EffectsSubMenu(option) #Call EffectsSubMenu function with option parameter
             self.MenuSample(4) #Call MenuSample function with option 4 parameter to show audio effects to sample menu again
 
         elif option == 0: #Else if option is 0
             
             print("Backing...") #Print progress message
-            sleep(1) #Sleep 1 second
+            #sleep(1) #Sleep 1 second
             self.__init__() #Call init constructor to show main menu again
 
             new_option = int(input("\nEnter option number: ")) #Input new option number
@@ -153,14 +267,34 @@ class Menu: #Start class Menu
             new_option = int(input("\nEnter option number: ")) #Input new option number
             self.MenuSample(new_option) #Call menusample function again with new option parameter
 
+    #End MenuSample
+
     def EffectsSubMenu(self, option): #Start function effectsubmenu with option parameter
+        
+        console = Console() #Create console object from rich library
 
         if option == 1: #If option is 1
 
             EditSample = es.EditSamp() #Create object EditSample from EditSamp module
 
-            os.system('clear' if os.name == 'posix' else 'cls') #Clear the terminal screen
             print("Filter Sample selected") #Print filter sample selected message
+            console.clear() #Clear the terminal screen
+            
+            title = (r"""
+                     
+██╗  ██╗██████╗ ██╗    ██╗██╗     ██████╗ ██╗
+██║  ██║██╔══██╗██║   ██╔╝██║     ██╔══██╗██║
+███████║██████╔╝██║  ██╔╝ ██║     ██████╔╝██║
+██╔══██║██╔═══╝ ╚═╝ ██╔╝  ██║     ██╔═══╝ ╚═╝
+██║  ██║██║     ██╗██╔╝   ███████╗██║     ██╗
+╚═╝  ╚═╝╚═╝     ╚═╝╚═╝    ╚══════╝╚═╝     ╚═╝ 
+                                                                                        
+            """)
+
+            console.rule(title = "You are in: Filter Menu", characters = "=") #Print rule with rich library
+            console.print(title, style="bold blue", justify="center") #Print title with rich style
+            console.rule(title = "Back to: Effects SubMenu", characters = "=") #Print rule with rich library
+
             EditSample.Catch(True) #Call Catch function from EditSamp object with True parameter to indicate it was called from the main menu
 
             self.MenuSample(4) #Call menucontrols function with option 1 parameter to show sample menu again
@@ -169,8 +303,24 @@ class Menu: #Start class Menu
 
             EditSample = es.EditSamp() #Create object EditSample from EditSamp module
 
-            os.system('clear' if os.name == 'posix' else 'cls') #Clear the terminal screen
             print("Pitch Control selected") #Print pitch control selected message
+            console.clear() #Clear the terminal screen
+
+            title = (r"""
+
+██████╗ ██╗████████╗ ██████╗██╗  ██╗██╗
+██╔══██╗██║╚══██╔══╝██╔════╝██║  ██║██║
+██████╔╝██║   ██║   ██║     ███████║██║
+██╔═══╝ ██║   ██║   ██║     ██╔══██║╚═╝
+██║     ██║   ██║   ╚██████╗██║  ██║██╗
+╚═╝     ╚═╝   ╚═╝    ╚═════╝╚═╝  ╚═╝╚═╝
+
+            """)  
+            
+            console.rule(title = "You are in: Pitch Menu", characters = "=") #Print rule with rich library
+            console.print(title, style="bold blue", justify="center") #Print title with rich style
+            console.rule(title = "Back to: Effects SubMenu", characters = "=") #Print rule with rich library
+
             EditSample.Catch(False) #Call PitchControl function from EditSamp object with False parameter to indicate it was called from the main menu
 
             self.MenuSample(4) #Call menucontrols function with option 1 parameter to show sample menu again
@@ -178,7 +328,7 @@ class Menu: #Start class Menu
         elif option == 0: #Else if option is 0
             
             print("Backing...") #Print progress message
-            sleep(1) #Sleep 1 second
+            #sleep(1) #Sleep 1 second
             self.MenuControls(1) #Call menucontrols function with option 1 parameter to show sample menu again
 
         else: #Else
@@ -194,58 +344,117 @@ class Menu: #Start class Menu
         global backopt #Global variable to control back option in play menu
         backopt = 1 #Set backopt to 1 to control back option in play
 
-        if option == 1: #If option is 1
-            
-            AudioBank = ab.AudioBank() #Create object AudioBank from AudioBank module
+        AudioBank = ab.AudioBank() #Create object AudioBank from AudioBank module
+        console = Console() #Create console object from rich library
 
-            os.system('clear' if os.name == 'posix' else 'cls') #Clear the terminal screen
+        if option == 1: #If option is 1
+
             print("\tCreate Bank") #Print create bank selected message
-            
+            console.clear() #Clear the terminal screen
+
+            title = (r"""
+                     
+ ██████╗██████╗ ███████╗ █████╗ ████████╗███████╗██╗
+██╔════╝██╔══██╗██╔════╝██╔══██╗╚══██╔══╝██╔════╝██║
+██║     ██████╔╝█████╗  ███████║   ██║   █████╗  ██║
+██║     ██╔══██╗██╔══╝  ██╔══██║   ██║   ██╔══╝  ╚═╝
+╚██████╗██║  ██║███████╗██║  ██║   ██║   ███████╗██╗
+ ╚═════╝╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝   ╚═╝   ╚══════╝╚═╝
+                                                    
+            """)
+
+            console.rule(title = "You are in: Bank Create Menu", characters = "=") #Print rule with rich library
+            console.print(title, style="bold blue", justify="center") #Print title with rich style
+            console.rule(title = "Back to: Banks Menu", characters = "=") #Print rule with rich library
+
             sound = AudioBank.CreateBank() #Call CreateBank function from AudioBank object and saves the returned sounds
             
+            if sound == None: #If sound is None it means that the user canceled the bank creation process and we need to go back to the bank menu
+                
+                console.print("\nBank creation canceled, going back to Banks Menu...", style="bold red", justify="center") #Print cancel message
+                sleep(1) #Sleep 3 seconds
+                self.MenuControls(2) #Call MenuBank function with option 2 parameter to show bank menu again
+            
             self.ShowPlayMenu() #Call ShowPlayMenu function
-            option = int(input("\nEnter option number: ")) #Input option number
+            option = int(console.input("\n[bold]Enter option number: [/bold]")) #Input option number
             self.PlayMenu(option, sound) #Call PlayMenu function with option parameter
 
         elif option == 2: #Else if option is 2
-            
-            AudioBank = ab.AudioBank() #Create object AudioBank from AudioBank module
 
-            os.system('clear' if os.name == 'posix' else 'cls') #Clear the terminal screen
             print("\tLoad Bank") #Print load bank selected message
-            
+            console.clear() #Clear the terminal screen
+
+            title = (r"""
+
+██╗      ██████╗  █████╗ ██████╗ 
+██║     ██╔═══██╗██╔══██╗██╔══██╗
+██║     ██║   ██║███████║██║  ██║
+██║     ██║   ██║██╔══██║██║  ██║
+███████╗╚██████╔╝██║  ██║██████╔╝
+╚══════╝ ╚═════╝ ╚═╝  ╚═╝╚═════╝ 
+                                 
+            """)
+
+            console.rule(title = "You are in: Bank Load Menu", characters = "=") #Print rule with rich library
+            console.print(title, style="bold blue", justify="center") #Print title with rich style
+            console.rule(title = "Back to: Banks Menu", characters = "=") #Print rule with rich library
+
             sound = AudioBank.LoadBank() #Call LoadBank function from AudioBank object
 
+            if sound == None: #If sound is None it means that the user canceled the bank creation process and we need to go back to the bank menu
+                
+                console.print("\nBank Load canceled, going back to Banks Menu...", style="bold red", justify="center") #Print cancel message
+                sleep(1) #Sleep 3 seconds
+                self.MenuControls(2) #Call MenuBank function with option 2 parameter to show bank menu again
+
             self.ShowPlayMenu() #Call ShowPlayMenu function
-            option = int(input("\nEnter option number: ")) #Input option number
+            option = int(console.input("\n[bold]Enter option number: [/bold]")) #Input option number
             self.PlayMenu(option, sound) #Call PlayMenu function with option parameter
 
         elif option == 0: #Else if option is 0
         
             print("Backing...") #Print progress message
-            sleep(1) #Sleep 1 second
+            #sleep(1) #Sleep 1 second
             self.__init__() #Call init constructor to show main menu again
 
-            new_option = int(input("\nEnter option number: ")) #Input new option number
+            new_option = int(console.input("\n[bold]Enter option number: [/bold]")) #Input new option number
             self.MenuControls(new_option) #Call menucontrols function with new option parameter
 
         else: #Else
             
             print("Invalid option") #Print invalid option message
             
-            new_option = int(input("\nEnter option number: ")) #Input new option number
+            new_option = int(console.input("\n[bold]Enter option number: [/bold]")) #Input new option number
             self.MenuBank(new_option) #Call menubank function again with new option parameter
 
     #End MenuBank
 
     def ShowPlayMenu(self): #Start function playmenu
+        
+        console = Console() #Create console object from rich library
 
-        os.system('clear' if os.name == 'posix' else 'cls') #Clear the terminal screen
         print("\tPlay Menu") #Print play menu message
-        print("\nSelect an option:") #Print select option message
-        print("1. Finger Drumming") #Print option 1
-        print("2. Step Seq") #Print option 2
-        print("0. Back") #Print option 3
+        console.clear() #Clear the terminal screen
+    
+        title = (r"""
+                 
+██████╗ ██╗      █████╗ ██╗   ██╗██╗████████╗██╗
+██╔══██╗██║     ██╔══██╗╚██╗ ██╔╝██║╚══██╔══╝██║
+██████╔╝██║     ███████║ ╚████╔╝ ██║   ██║   ██║
+██╔═══╝ ██║     ██╔══██║  ╚██╔╝  ██║   ██║   ╚═╝
+██║     ███████╗██║  ██║   ██║   ██║   ██║   ██╗
+╚═╝     ╚══════╝╚═╝  ╚═╝   ╚═╝   ╚═╝   ╚═╝   ╚═╝
+                                              
+            """)
+
+        console.rule(title = "You are in: Play Menu", characters = "=") #Print rule with rich library
+        console.print(title, style="bold blue", justify="center") #Print title with rich style
+        console.rule(title = "Back to: Banks Menu", characters = "=") #Print rule with rich library
+        
+        console.print("\nSelect an option:", style="bold", justify="center") #Print select option message
+        console.print("1. Finger Drumming", style="bold white", justify="full") #Print option 1
+        console.print("2. Step Seq", style="bold blue", justify="full") #Print option 2
+        console.print("0. Back", style="bold yellow", justify="full") #Print option 3
 
     #End ShowPlayMenu
 
@@ -253,13 +462,14 @@ class Menu: #Start class Menu
 
         os.system('clear' if os.name == 'posix' else 'cls') #Clear the terminal screen
         PlayMode = pm.PlayModes() #Create object PlayModes from PlayMode module
+        console = Console() #Create console object from rich library
 
         if option == 1:#If option is 1:
         
             PlayMode.FingerDrum(sound) #Call FingerDrum function from PlayModes object with sound parameter
 
             self.ShowPlayMenu() #Call ShowPlayMenu function
-            option = int(input("\nEnter option number: ")) #Input option number
+            option = int(console.input("\n[bold]Enter option number: [/bold]")) #Input option number
             self.PlayMenu(option, sound) #Call PlayMenu function with option parameter
             
         elif option == 2:
@@ -267,31 +477,31 @@ class Menu: #Start class Menu
             PlayMode.StepSeq(sound) #Call StepSeq function from PlayModes object with sound parameter
 
             self.ShowPlayMenu() #Call ShowPlayMenu function
-            option = int(input("\nEnter option number: ")) #Input option number
+            option = int(console.input("\n[bold]Enter option number: [/bold]")) #Input option number
             self.PlayMenu(option, sound) #Call PlayMenu function with option parameter
         
         elif option == 0: #Else if option is 0
             
             print("Backing...") #Print progress message
-            sleep(1) #Sleep 1 second
+            #sleep(1) #Sleep 1 second
             
             if backopt == 1:
 
                 self.MenuControls(2) #Call menucontrols function with option 2 parameter to show audio bank menu again
-                new_option = int(input("\nEnter option number: ")) #Input new option number
+                new_option = int(input("\n[bold]Enter option number: [/bold]")) #Input new option number
                 self.MenuBank(new_option) #Call MenuBank function with new option parameter
             
             elif backopt == 0:
                 
                 self.MenuControls(1) #Call menucontrols function with option 2 parameter to show audio bank menu again
-                new_option = int(input("\nEnter option number: ")) #Input new option number
+                new_option = int(input("\n[bold]Enter option number: [/bold]")) #Input new option number
                 self.MenuBank(new_option) #Call MenuBank function with new option parameter
 
         else:
             
             print("Invalid option") #Print invalid option message
             
-            new_option = int(input("\nEnter option number: ")) #Input new option number
+            new_option = int(input("\n[bold]Enter option number: [/bold]")) #Input new option number
             self.MenuBank(new_option) #Call menubank function again with new option parameter
 
     #End PlayMenu

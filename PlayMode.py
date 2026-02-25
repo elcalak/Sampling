@@ -30,6 +30,8 @@ import StepSeqControls as StepSC #Call the module to control Step Sequencer
 import sys #Call sys module 
 import termios #Call termios module
 import tty #Call tty module
+from rich.console import Console #Call console module from rich library
+
 
 class PlayModes:
 
@@ -37,7 +39,7 @@ class PlayModes:
 
         print("PlayModes initialized") #Work check
         
-        sleep(1) #Sleep 1 second
+        #sleep(1) #Sleep 1 second
         os.system('clear' if os.name == 'posix' else 'cls') #Clear the terminal screen
     
     #End contructor
@@ -46,6 +48,8 @@ class PlayModes:
 
          #***This function will be change for Micros***" 
             
+            console = Console() #Create a console object from rich library for better terminal output
+
             key_sample_map = {} #Create a dictionary to map keys to samples
 
             slots_tuple = ac.load(sound) # Load samples using AudioControls module
@@ -69,12 +73,26 @@ class PlayModes:
             
             print("Mapping Succes!") #Work check line
 
-            sleep(1) #Sleep 1 seconds
+            #sleep(1) #Sleep 1 seconds
 
-            os.system('clear' if os.name == 'posix' else 'cls') #Clear the terminal screen
+            console.clear() #Clear the terminal screen
 
-            print("\tFinger Drumming Mode") #Title message
-            print("Press keys (r ,t ,y ,f ,g ,h ,v ,n to play slot 1 to 9 respected) to play samples. Press 'q' to quit and 's' to save bank.") #Instructions message
+            title = (r"""
+
+███████╗██╗███╗   ██╗ ██████╗ ███████╗██████╗ ██████╗ ██████╗ ██╗   ██╗███╗   ███╗██╗
+██╔════╝██║████╗  ██║██╔════╝ ██╔════╝██╔══██╗██╔══██╗██╔══██╗██║   ██║████╗ ████║██║
+█████╗  ██║██╔██╗ ██║██║  ███╗█████╗  ██████╔╝██║  ██║██████╔╝██║   ██║██╔████╔██║██║
+██╔══╝  ██║██║╚██╗██║██║   ██║██╔══╝  ██╔══██╗██║  ██║██╔══██╗██║   ██║██║╚██╔╝██║╚═╝
+██║     ██║██║ ╚████║╚██████╔╝███████╗██║  ██║██████╔╝██║  ██║╚██████╔╝██║ ╚═╝ ██║██╗
+╚═╝     ╚═╝╚═╝  ╚═══╝ ╚═════╝ ╚══════╝╚═╝  ╚═╝╚═════╝ ╚═╝  ╚═╝ ╚═════╝ ╚═╝     ╚═╝╚═╝
+                                                                                                          
+                     """)
+
+            console.rule(title = "You are in: Finger Drummin Mode", characters = "=") #Print rule with rich library
+            console.print(title, style="bold blue", justify="center") #Print title with rich style
+            console.rule(title = "Back to: Playit Menu", characters = "=") #Print rule with rich library
+            
+            console.print("Press keys ([bold blue]r ,t ,y ,f ,g ,h ,v ,n[/bold blue] to play slot 1 to 9 respected) to play samples. Press 'q' to quit and 's' to save bank.") #Instructions message
 
             is_recording = False #Recording state
             session_events = [] #List to store session events
@@ -158,6 +176,8 @@ class PlayModes:
     #End FingerDrum
 
     def StepSeq(self, sound): #Start function stepseq with sound parameter
+        
+        console = Console() #Create a console object from rich library for better terminal output
 
         # Step Sequencer: 4/4 x pattern, 16 steps, each step can trigger a sample
         slots_tuple = ac.load(sound) # Load samples using AudioControls module
@@ -172,19 +192,37 @@ class PlayModes:
 
         StepControl = StepSC.StepSeqControls() #Create StepSeqControls instance
 
-        sleep(1) #Sleep 1 seconds
+        #sleep(1) #Sleep 1 seconds
 
-        os.system('clear' if os.name == 'posix' else 'cls') #Clear the terminal screen
+        console.clear() #Clear the terminal screen
+
+        title = (r"""
+
+███████╗████████╗███████╗██████╗ ███████╗███████╗ ██████╗ ██╗
+██╔════╝╚══██╔══╝██╔════╝██╔══██╗██╔════╝██╔════╝██╔═══██╗██║
+███████╗   ██║   █████╗  ██████╔╝███████╗█████╗  ██║   ██║██║
+╚════██║   ██║   ██╔══╝  ██╔═══╝ ╚════██║██╔══╝  ██║▄▄ ██║╚═╝
+███████║   ██║   ███████╗██║     ███████║███████╗╚██████╔╝██╗
+╚══════╝   ╚═╝   ╚══════╝╚═╝     ╚══════╝╚══════╝ ╚══▀▀═╝ ╚═╝
+            
+            """)
         
-        print("\tStep Sequencer Mode") #Title message
-        print("Assign samples to steps (1-16).") #Instructions assign samples
-        print("Type 'play [seqs]' to play sequences, 'loop [seqs]' to loop [seqs], 'show' to display, 'clear' to reset, 'tempo [tempo]' to change tempo\n'seq [seq]' to change or create a sequence, 'save [name]' to save patterns, 'load [name]' to load patterns, 'export [seqs]' to export wav, 'q' to quit.") #Command instructions
-        print("To assign multiple samples to a step: step# sample# sample# ... (e.g., 1 2 3 4)") #Assign multiple samples instruction
-        print("Example to change or create a sequence: seq B") #To change sequence example
+        console.rule(title = "You are in: Step Sequencer Mode", characters = "=") #Print rule with rich library
+        console.print(title, style="bold blue", justify="center") #Print title with rich style
+        #console.rule(title = "Back to: Playit Menu", characters = "=") #Print rule with rich library
+
+        console.print("Assign samples to steps (1-16).") #Instructions assign samples
+        console.print("Type 'play (seqs)' to play sequences, 'loop (seqs)' to loop seqs, 'show' to display, 'clear' to reset, 'tempo (tempo)' to change tempo" \
+                    "\n'seq (seq)' to change or create a sequence, 'save (name)' to save patterns" \
+                    "\n'load (name)' to load patterns, 'export (seqs)' to export wav, 'q' to quit.") #Command instructions
+        console.print("To assign multiple samples to a step: 'step# sample# sample#' ... (e.g., 1 2 3 4)") #Assign multiple samples instruction
+        console.print("Example to change or create a sequence: 'seq B'") #To change sequence example
         
+        console.rule(title = "Back to: Playit Menu", characters = "=") #Print rule with rich library
+
         while True: #Infinite loop for step sequencer commands
             
-            cmd = input(f"[Sequence {current_seq}] Command (step# sample# (sample#), play, loop, show, clear, tempo, seq, save, load, q): ").strip() #Input command
+            cmd = console.input(f"[[bold]Sequence[/bold] [bold blue]{current_seq}[/bold blue]] Command (step# sample# (sample#), play, loop, show, clear, tempo, seq, save, load, q): ").strip() #Input command
 
             if cmd == 'q': #If command is 'q'
                 
@@ -212,30 +250,30 @@ class PlayModes:
                 
                         else: #If not exists
                 
-                            print(f"Sequence '{s}' not found. Skipping.") #Print skip
+                            console.print(f"Sequence '{s}' not found. Skipping.", style="bold red", justify="full") #Print skip
                 
                 if not seqs_to_play: #If empty
                 
-                    print("No valid sequences to play.") #Print error
+                    console.print("No valid sequences to play.", style="bold", justify="full") #Print error
                 
                     continue #Continue loop
 
                 last_chain = seqs_to_play # Update last chain
-                print(f"Playing sequences {seqs_to_play} at {tempo} BPM...") #Play message
+                console.print(f"Playing sequences [bold blue]{seqs_to_play}[/bold blue] at [bold green]{tempo}[/bold green] BPM...") #Play message
                 beat_duration = 60 / tempo  # seconds per beat
                 step_duration = beat_duration / 4  # 16th note = quarter note / 4
 
                 for seq in seqs_to_play: #Iterate sequences
                 
-                    print(f"Sequence {seq}:") #Print sequence name
+                    console.print(f"[bold]Sequence[/bold] [bold blue]{seq}[/bold blue]:") #Print sequence name
                 
                     for i, sample_idxs in enumerate(sequences[seq]): #Iterate over the sequence
                 
-                        print(f"Step {i+1}: ", end='') #Print current step
+                        console.print(f"[bold]Step[/bold] [bold blue]{i+1}[/bold blue]: ", end='') #Print current step
                 
                         if sample_idxs: #If there are samples assigned to this step
                 
-                            print(f"Playing samples {sample_idxs}") #Print playing samples message
+                            console.print(f"[bold]Playing samples[/bold] [bold blue]{sample_idxs}[/bold blue]") #Print playing samples message
                 
                             for sample_idx in sample_idxs: #Play all samples assigned to this step
                 
@@ -245,7 +283,7 @@ class PlayModes:
                 
                         else: #Else
                 
-                            print("No samples") #Print no samples message
+                            console.print("[bold]No samples[/bold]") #Print no samples message
                 
                         sleep(step_duration) #Wait for the duration of the step
 
@@ -270,17 +308,17 @@ class PlayModes:
                 
                         else: #If not exists
                 
-                            print(f"Sequence '{s}' not found. Skipping.") #Print skip
+                            console.print(f"Sequence '{s}' not found. Skipping.", style="bold red", justify="full") #Print skip
                 
                 if not seqs_to_play: #If empty
                 
-                    print("No valid sequences to loop.") #Print error
+                    print("No valid sequences to loop.", style="bold") #Print error
                 
                     continue #Continue loop
 
                 last_chain = seqs_to_play # Update last chain
-                print(f"Looping sequences {seqs_to_play} at {tempo} BPM...") #Play message
-                print("Press Ctrl+C to stop looping.") #Loop info message
+                console.print(f"Looping sequences [bold blue]{seqs_to_play}[/bold blue] at [bold green]{tempo}[/bold green] BPM...") #Play message
+                console.print("Press Ctrl+C to stop looping.",  style="bold red", justify="full") #Loop info message
                 
                 beat_duration = 60 / tempo  # seconds per beat
                 step_duration = beat_duration / 4  # 16th note = quarter note / 4
@@ -290,14 +328,16 @@ class PlayModes:
                     while True: #Loop forever until interrupted
                 
                         for seq in seqs_to_play: #Iterate sequences
-                            print(f"Sequence {seq}:") #Print sequence name
+                            
+                            console.print(f"[bold]Sequence[/bold] [bold blue]{seq}[/bold blue]:") #Print sequence name
+                            
                             for i, sample_idxs in enumerate(sequences[seq]): #Iterate over the sequence
                 
-                                print(f"Step {i+1}: ", end='') #Print current step
+                                console.print(f"[bold]Step[/bold] [bold blue]{i+1}[/bold blue]: ", end='') #Print current step
                 
                                 if sample_idxs: #If there are samples assigned to this step
                 
-                                    print(f"Playing samples {sample_idxs}") #Print playing samples message
+                                    console.print(f"[bold]Playing samples[/bold] [bold blue]{sample_idxs}[/bold blue]") #Print playing samples message
                 
                                     for sample_idx in sample_idxs: #Play all samples assigned to this step
                 
@@ -306,18 +346,18 @@ class PlayModes:
                                             ac.play(slots[sample_idx]) #Play the sample
                                 else: #Else
                 
-                                    print("No samples") #Print no samples message
+                                    console.print("[bold]No samples[/bold]") #Print no samples message
                 
                                 sleep(step_duration) #Wait for the duration of the step
                 
                 except KeyboardInterrupt: #Catch Ctrl+C to exit loop
                     
-                    print("\nStopped looping playback.") #Stop message
+                    console.print("\nStopped looping playback.", style="bold") #Stop message
 
             elif cmd == 'clear': #If command is 'clear'
                 
                 sequences[current_seq] = [[] for _ in range(num_steps)] #Reset the sequence to empty lists
-                print(f"Sequence '{current_seq}' cleared.") #Clear message
+                console.print(f"Sequence [bold blue]'{current_seq}'[/bold blue] cleared.") #Clear message
 
             elif cmd == 'show': #If command is 'show'
 
@@ -356,14 +396,14 @@ class PlayModes:
                     if 0 <= step < num_steps and all(0 <= idx < len(slots) for idx in sample_idxs): #If step and all sample indices are valid
                 
                         sequences[current_seq][step] = sample_idxs #Assign list of samples to the step
-                        print(f"Assigned samples {sample_idxs} to step {step+1} in sequence '{current_seq}'") #Assign message
+                        console.print(f"Assigned samples [bold green]{sample_idxs}[/bold green] to step [bold magenta]{step+1}[/bold magenta] in sequence [bold blue]'{current_seq}'[/bold blue]") #Assign message
                 
                     else: #Else
                 
-                        print("Invalid step or sample index.") #Invalid index message
+                        console.print("Invalid step or sample index.", style="bold") #Invalid index message
                 
                 except Exception: #Except block for invalid assign command
                 
-                    print("Invalid command format. Use: step# sample# [sample# ...]") #Invalid command message
+                    console.print("Invalid command format. Use: step# sample# [sample# ...]", style="bold red") #Invalid command message
          
     #End StepSeq

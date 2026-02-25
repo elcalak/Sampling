@@ -138,7 +138,12 @@ class AudioBank: #Start class Audio bank
         elif save_option == 'n': #If user dont want to save the bank
             
             print("Bank not saved.") #Print message
+            return #Return to the main function
         
+        else: #Contradiction
+            
+            print("Invalid option. Bank not saved.") #Print error message
+            return #Return to the main function
         #End if save option
         
         return self.sounds
@@ -256,36 +261,42 @@ class AudioBank: #Start class Audio bank
                 
                     print("Error: Invalid bank configuration file format.") #Print error message
 
+                    return None #Return None to indicate failure
                 #End contradiction
 
             except FileNotFoundError: #Init except for File not found
                 
                 print(f"Error: File not found - {file_path}") #Print error message
-            
+                
+                return None #Return None to indicate failure
             #End except File not found
 
             except json.JSONDecodeError: #Init except JSON decode error
             
                 print(f"Error: Could not decode JSON from file - {file_path}") #Print error message
-            
+
+                return None #Return None to indicate failure
             #End except JSON decode error
 
             except IOError as e: #Init except Input/output error
             
                 print(f"Error reading bank configuration file: {e}") #Print error message
-            
+
+                return None #Return None to indicate failure
             #End except Input/output error
 
             except Exception as e: #Init except for unespected error
             
-                 print(f"An unexpected error occurred during loading: {e}") #Print error message
-
+                print(f"An unexpected error occurred during loading: {e}") #Print error message
+                
+                return None #Return None to indicate failure
             #End except unspected error
 
         else: #Contradiction
             
             print("Load operation cancelled.") #Print message
-        
+            
+            return None #Return None to indicate failure
         #End contradiction
 
         return self.sounds
