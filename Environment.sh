@@ -7,8 +7,10 @@ set -e
 ENV_DIR="Environment"
 
 if [ -d "$ENV_DIR" ]; then
+    
     echo "🗑️ Deleting virtual Environment..."
     rm -rf "$ENV_DIR"
+
 fi
 
 echo "📦 Crearting virtual Environment in '$ENV_DIR'..."
@@ -18,12 +20,15 @@ echo "📦 Crearting virtual Environment in '$ENV_DIR'..."
 Python_version=$(python --version 2>&1)
 
 if Python_version == Python 3.13.12; then
+    
     echo "✅ Python 3.13.12 found: $(python --version)"
+
 else
+    
     echo "❌ Python 3.13.12 not found: $(python --version)"
     echo " ⬇️ Downgrading Now..."
 
-    pyenv intall 3.13.12
+    pyenv install 3.13.12
     pyenv global 3.13.12
     pyenv init - fish | source
     
@@ -45,10 +50,14 @@ pip install --upgrade pip
 
 # Instalar dependencias
 if [ -f Requirements.txt ]; then
+
     echo "📥 Intalling dependencies from Requirements.txt.."
     pip install -r Requirements.txt
+
 else
+
     echo "⚠️ Not found Requirements.txt"
+
 fi
 
 echo "🎉 Enviroment Ready"

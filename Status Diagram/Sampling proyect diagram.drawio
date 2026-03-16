@@ -197,11 +197,29 @@
         <mxCell id="gOX36DxmHDznMNv_uZdq-4" edge="1" parent="1" source="gOX36DxmHDznMNv_uZdq-1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" target="gOX36DxmHDznMNv_uZdq-3" value="">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
+        <mxCell id="Rhp9lLjbtlpZvRzDrPEW-2" edge="1" parent="1" source="gOX36DxmHDznMNv_uZdq-1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" target="Rhp9lLjbtlpZvRzDrPEW-1" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
         <mxCell id="gOX36DxmHDznMNv_uZdq-1" parent="1" style="whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;rounded=1;" value="Menu Control" vertex="1">
           <mxGeometry height="60" width="120" x="40" y="420" as="geometry" />
         </mxCell>
         <mxCell id="gOX36DxmHDznMNv_uZdq-3" parent="1" style="whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;rounded=1;" value="Enhance menus with Rich" vertex="1">
           <mxGeometry height="60" width="120" x="180" y="420" as="geometry" />
+        </mxCell>
+        <mxCell id="Rhp9lLjbtlpZvRzDrPEW-4" edge="1" parent="1" source="Rhp9lLjbtlpZvRzDrPEW-1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" target="Rhp9lLjbtlpZvRzDrPEW-3" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="Rhp9lLjbtlpZvRzDrPEW-1" parent="1" style="whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;rounded=1;" value="Main" vertex="1">
+          <mxGeometry height="60" width="120" x="40" y="500" as="geometry" />
+        </mxCell>
+        <mxCell id="Rhp9lLjbtlpZvRzDrPEW-6" edge="1" parent="1" source="Rhp9lLjbtlpZvRzDrPEW-3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" target="Rhp9lLjbtlpZvRzDrPEW-5" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="Rhp9lLjbtlpZvRzDrPEW-3" parent="1" style="whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;rounded=1;" value="Create Main controls" vertex="1">
+          <mxGeometry height="60" width="120" x="180" y="500" as="geometry" />
+        </mxCell>
+        <mxCell id="Rhp9lLjbtlpZvRzDrPEW-5" parent="1" style="whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;rounded=1;" value="Pylint refactorization" vertex="1">
+          <mxGeometry height="60" width="120" x="320" y="500" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
