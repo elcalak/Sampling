@@ -28,12 +28,23 @@ else
     echo "❌ Python 3.13.12 not found: $(python --version)"
     echo " ⬇️ Downgrading Now..."
 
-    pyenv install 3.13.12
-    pyenv global 3.13.12
-    pyenv init - fish | source
+    Pyenv_version=$(pyenv --version 2>&1)
+
+    if [[ -z "$Pyenv_version" ]]; then
     
-    echo "✅ Python downgraded succesfully: $(python --version)"
-    echo "If you dont have pyenv installed or configured, please install it and run 'pyenv install 3.13.12' and 'pyenv global 3.13.12' to downgrade your Python version to 3.13.12".
+        echo "❌ Pyenv not found"
+        exit
+    
+    else
+
+        pyenv install 3.13.12
+        pyenv global 3.13.12
+        #pyenv init - fish | source
+    
+        echo "✅ Python downgraded succesfully: $(python --version)"
+        echo "If you dont have pyenv installed or configured, please install it and run 'pyenv install 3.13.12' and 'pyenv global 3.13.12' to downgrade your Python version to 3.13.12".
+
+    fi
 
 fi
 
