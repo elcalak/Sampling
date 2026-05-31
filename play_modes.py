@@ -105,7 +105,8 @@ class PlayModes:
 
         console.print("Press keys ([bold blue]r ,t ,y ,f ,g ,h ,v ,n[/bold blue] " \
         "to play slot 1 to 9 respected) to play samples. " \
-        "Press 'q' to quit and 's' to save bank.") #Instructions message
+        "Press 'q' to quit, 'e' to start/stop recording, " \
+        "and 's' to save bank.") #Instructions message
 
         is_recording = False #Recording state
         session_events = [] #List to store session events
@@ -424,7 +425,7 @@ class PlayModes:
 
             elif cmd.startswith('seq'): #If command is 'seq'
 
-                #Call Seq function from StepSeqControls module
+                #Call Seq function from StepSeqControls module                
                 sequences, current_seq = step_controls.seq(cmd, sequences, current_seq, num_steps)
 
             elif cmd.startswith('save'): #If command starts with 'save'
@@ -434,8 +435,24 @@ class PlayModes:
 
             elif cmd.startswith('load'): #If command starts with 'load'
 
-                #Call Load function from StepSeqControls module
-                tempo, sequences, last_chain = step_controls.load_patterns()
+                #Call Load function and store in a temporary variable to handle cancellation (None return)
+                loaded_data = step_controls.load_patterns()
+
+                #If loaded_data exist
+                if loaded_data:
+                    
+                    tempo, sequences, last_chain = loaded_data #Unpack loaded data into current state variables
+                    
+                    console.print(
+                        "Patterns loaded successfully.", style="bold green"
+                    ) #Success message
+                
+                else: #if loaded_data not exits (cancelled or failed)
+                
+                    # If load was cancelled or failed, we simply don't update the current state
+                    console.print(
+                        "Load cancelled or failed. Current patterns preserved.", style="bold red"
+                    ) #Failure message
 
             elif cmd.startswith('export'): #If command starts with 'export'
 

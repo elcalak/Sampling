@@ -37,7 +37,7 @@ class Menu: #Start class Menu
 
         print("Menu initialized") #Work check
 
-        sleep(1) #Sleep 1 second
+        #sleep(1) #Sleep 1 second
         console.clear() #Clear the terminal screen
 
         title = r"""
